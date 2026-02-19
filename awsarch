@@ -1,0 +1,15 @@
+your-bucket/
+├── uploads/
+│   ├── Documents/
+│   │   ├── file1.pdf
+│   │   └── Contracts/
+│   │       └── contract.docx
+│   └── Images/
+│       └── photo.jpg
+└── folders/
+    ├── Documents/.foldermarker
+    ├── Documents/Contracts/.foldermarker
+    └── Images/.foldermarker
+
+
+    http://localhost:5000/api/test-aws

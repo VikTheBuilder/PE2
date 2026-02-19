@@ -1,0 +1,346 @@
+/* ======================================================
+   ComputeManager — Obsidian / Neon Green
+   ====================================================== */
+
+.compute-page {
+    padding: var(--space-6);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* ─── Header ──────────────────────────────────────── */
+.compute-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-8);
+    flex-wrap: wrap;
+    gap: var(--space-4);
+}
+
+.compute-header-left {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+}
+
+.compute-header-icon {
+    font-size: 2rem;
+    color: #00FF88;
+    filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.3));
+}
+
+.compute-header h1 {
+    font-size: var(--text-2xl);
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.compute-subtitle {
+    color: var(--text-tertiary);
+    font-size: var(--text-sm);
+    margin: 0;
+}
+
+.compute-header-actions {
+    display: flex;
+    gap: var(--space-3);
+}
+
+/* ─── Stats Row ───────────────────────────────────── */
+.compute-stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: var(--space-4);
+    margin-bottom: var(--space-8);
+}
+
+.compute-stat-card {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-5, 1.25rem) var(--space-6);
+    background: rgba(17, 23, 24, 0.65);
+    border: 1px solid rgba(0, 255, 136, 0.12);
+    border-radius: var(--radius-lg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.compute-stat-card:hover {
+    border-color: rgba(0, 255, 136, 0.3);
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.06);
+}
+
+.compute-stat-card .stat-icon {
+    font-size: 1.4rem;
+    color: #00FF88;
+}
+
+.compute-stat-card .stat-icon.running-icon {
+    color: #00FF88;
+}
+
+.compute-stat-card .stat-icon.stopped-icon {
+    color: #FF5555;
+}
+
+.stat-value {
+    display: block;
+    font-size: var(--text-xl);
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.2;
+}
+
+.stat-label {
+    display: block;
+    font-size: var(--text-xs);
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* ─── Bulk Actions ────────────────────────────────── */
+.compute-bulk-bar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-6);
+    background: rgba(0, 255, 136, 0.06);
+    border: 1px solid rgba(0, 255, 136, 0.2);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--space-6);
+    font-size: var(--text-sm);
+    color: #00FF88;
+    font-weight: 600;
+    animation: fadeIn 0.2s ease-out;
+}
+
+/* ─── Instance Cards ──────────────────────────────── */
+.compute-instances {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    margin-bottom: var(--space-8);
+}
+
+.compute-instance-card {
+    display: grid;
+    grid-template-columns: 40px 1fr 1.2fr auto;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-5, 1.25rem) var(--space-6);
+    background: rgba(17, 23, 24, 0.65);
+    border: 1px solid rgba(0, 255, 136, 0.10);
+    border-radius: var(--radius-lg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: all 0.25s ease;
+}
+
+.compute-instance-card:hover {
+    border-color: rgba(0, 255, 136, 0.3);
+    box-shadow: 0 4px 24px rgba(0, 255, 136, 0.06);
+    transform: translateY(-2px);
+}
+
+.compute-instance-card.selected {
+    border-color: #00FF88;
+    background: rgba(0, 255, 136, 0.04);
+    box-shadow: 0 0 16px rgba(0, 255, 136, 0.08);
+}
+
+.instance-select input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #00FF88;
+    cursor: pointer;
+}
+
+/* Instance Info */
+.instance-info-main {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+
+.instance-name-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+}
+
+.instance-name {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: var(--text-base);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.instance-id {
+    font-family: var(--font-mono, monospace);
+    font-size: var(--text-xs);
+    color: var(--text-tertiary);
+}
+
+/* State Badges */
+.compute-state-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 10px;
+    border-radius: var(--radius-full);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.state-running {
+    background: rgba(0, 255, 136, 0.12);
+    color: #00FF88;
+    border: 1px solid rgba(0, 255, 136, 0.25);
+}
+
+.state-stopped {
+    background: rgba(255, 85, 85, 0.12);
+    color: #FF5555;
+    border: 1px solid rgba(255, 85, 85, 0.25);
+}
+
+.state-pending {
+    background: rgba(255, 179, 71, 0.12);
+    color: #FFB347;
+    border: 1px solid rgba(255, 179, 71, 0.25);
+}
+
+.state-terminated {
+    background: rgba(120, 120, 120, 0.12);
+    color: #888;
+    border: 1px solid rgba(120, 120, 120, 0.25);
+}
+
+/* Instance Specs */
+.instance-specs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+}
+
+.spec-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+}
+
+.spec-item svg {
+    color: var(--text-tertiary);
+    flex-shrink: 0;
+}
+
+/* Instance Actions */
+.instance-actions {
+    display: flex;
+    gap: var(--space-2);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.compute-instance-card:hover .instance-actions {
+    opacity: 1;
+}
+
+/* ─── Placeholder Note ────────────────────────────── */
+.compute-placeholder-note {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+    padding: var(--space-4) var(--space-6);
+    background: rgba(0, 255, 136, 0.04);
+    border: 1px dashed rgba(0, 255, 136, 0.2);
+    border-radius: var(--radius-lg);
+    color: var(--text-tertiary);
+    font-size: var(--text-sm);
+}
+
+.compute-placeholder-note svg {
+    color: rgba(0, 255, 136, 0.4);
+}
+
+/* ─── Responsive ──────────────────────────────────── */
+@media (max-width: 900px) {
+    .compute-instance-card {
+        grid-template-columns: 40px 1fr;
+        gap: var(--space-3);
+    }
+
+    .instance-specs {
+        grid-column: 1 / -1;
+    }
+
+    .instance-actions {
+        grid-column: 1 / -1;
+        opacity: 1;
+        justify-content: flex-end;
+    }
+}
+
+@media (max-width: 640px) {
+    .compute-page {
+        padding: var(--space-4);
+    }
+
+    .compute-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .compute-stats-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .compute-instance-card {
+        grid-template-columns: 1fr;
+        padding: var(--space-4);
+    }
+
+    .instance-select {
+        display: none;
+    }
+}
+
+/* ─── Animations ──────────────────────────────────── */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.compute-instance-card {
+    animation: fadeIn 0.3s ease-out;
+}
+
+.compute-instance-card:nth-child(2) {
+    animation-delay: 0.05s;
+}
+
+.compute-instance-card:nth-child(3) {
+    animation-delay: 0.1s;
+}
+
+.compute-instance-card:nth-child(4) {
+    animation-delay: 0.15s;
+}

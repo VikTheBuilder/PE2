@@ -1,0 +1,1415 @@
+/**
+ * Core Animation CSS Foundation
+ * Provides CSS custom properties, utility classes, and base animations
+ */
+
+:root {
+  /* Animation Durations */
+  --anim-fast: 150ms;
+  --anim-normal: 250ms;
+  --anim-slow: 350ms;
+  --anim-page: 400ms;
+  
+  /* Easing Functions */
+  --ease-entrance: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --ease-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-gentle: cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Scroll Animation Settings */
+  --scroll-offset: 50px;
+  --stagger-base: 100ms;
+  --stagger-increment: 50ms;
+  
+  /* Performance Settings */
+  --animation-fill-mode: both;
+  --animation-play-state: running;
+}
+
+/* Reduced motion support - disable all animations */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --anim-fast: 0ms;
+    --anim-normal: 0ms;
+    --anim-slow: 0ms;
+    --anim-page: 0ms;
+    --stagger-base: 0ms;
+    --stagger-increment: 0ms;
+  }
+  
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0ms !important;
+    transition-delay: 0ms !important;
+  }
+}
+
+/* Base animation classes */
+.animate-fade-in {
+  opacity: 0;
+  animation: fadeIn var(--anim-normal) var(--ease-entrance) var(--animation-fill-mode);
+}
+
+.animate-fade-out {
+  opacity: 1;
+  animation: fadeOut var(--anim-normal) var(--ease-exit) var(--animation-fill-mode);
+}
+
+.animate-slide-up {
+  opacity: 0;
+  transform: translateY(var(--scroll-offset));
+  animation: slideUp var(--anim-normal) var(--ease-entrance) var(--animation-fill-mode);
+}
+
+.animate-slide-down {
+  opacity: 0;
+  transform: translateY(calc(-1 * var(--scroll-offset)));
+  animation: slideDown var(--anim-normal) var(--ease-entrance) var(--animation-fill-mode);
+}
+
+.animate-scale-in {
+  opacity: 0;
+  transform: scale(0.9);
+  animation: scaleIn var(--anim-normal) var(--ease-bounce) var(--animation-fill-mode);
+}
+
+.animate-scale-out {
+  opacity: 1;
+  transform: scale(1);
+  animation: scaleOut var(--anim-normal) var(--ease-exit) var(--animation-fill-mode);
+}
+
+/* Enhanced scroll-triggered animations */
+.animate-on-scroll {
+  opacity: 1; /* Default to visible */
+  transform: translateY(0); /* Default to normal position */
+  transition: opacity var(--anim-normal) var(--ease-spring),
+              transform var(--anim-normal) var(--ease-spring);
+}
+
+/* Only animate when intersection observer is active */
+.animate-on-scroll:not(.visible) {
+  opacity: 0;
+  transform: translateY(var(--scroll-offset));
+}
+
+.animate-on-scroll.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Enhanced fade-up animation for content reveals */
+.animate-on-scroll-fade-up {
+  opacity: 1; /* Default to visible */
+  transform: translateY(0); /* Default to normal position */
+  transition: opacity var(--animation-duration, var(--anim-normal)) var(--ease-spring),
+              transform var(--animation-duration, var(--anim-normal)) var(--ease-spring);
+}
+
+.animate-on-scroll-fade-up:not(.visible) {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.animate-on-scroll-fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Enhanced fade-down animation */
+.animate-on-scroll-fade-down {
+  opacity: 1; /* Default to visible */
+  transform: translateY(0); /* Default to normal position */
+  transition: opacity var(--animation-duration, var(--anim-normal)) var(--animation-easing, var(--ease-entrance)),
+              transform var(--animation-duration, var(--anim-normal)) var(--animation-easing, var(--ease-entrance));
+}
+
+.animate-on-scroll-fade-down:not(.visible) {
+  opacity: 0;
+  transform: translateY(-30px);
+}
+
+.animate-on-scroll-fade-down.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Fade animations */
+.animate-on-scroll-fade {
+  opacity: 1; /* Default to visible */
+  transition: opacity var(--animation-duration, var(--anim-normal)) var(--animation-easing, var(--ease-entrance));
+}
+
+.animate-on-scroll-fade:not(.visible) {
+  opacity: 0;
+}
+
+.animate-on-scroll-fade.visible {
+  opacity: 1;
+}
+
+/* Slide animations */
+.animate-on-scroll-slide-up {
+  opacity: 1; /* Default to visible */
+  transform: translateY(0); /* Default to normal position */
+  transition: opacity var(--animation-duration, var(--anim-normal)) var(--animation-easing, var(--ease-entrance)),
+              transform var(--animation-duration, var(--anim-normal)) var(--animation-easing, var(--ease-entrance));
+}
+
+.animate-on-scroll-slide-up:not(.visible) {
+  opacity: 0;
+  transform: translateY(var(--scroll-offset));
+}
+
+.animate-on-scroll-slide-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.animate-on-scroll-slide-down {
+  opacity: 0;
+  transform: translateY(calc(-1 * var(--scroll-offset)));
+  transition: opacity var(--animation-duration, var(--anim-normal)) var(--animation-easing, var(--ease-entrance)),
+              transform var(--animation-duration, var(--anim-normal)) var(--animation-easing, var(--ease-entrance));
+}
+
+.animate-on-scroll-slide-down.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.animate-on-scroll-slide-left {
+  opacity: 0;
+  transform: translateX(var(--scroll-offset));
+  transition: opacity var(--animation-duration, var(--anim-normal)) var(--animation-easing, var(--ease-entrance)),
+              transform var(--animation-duration, var(--anim-normal)) var(--animation-easing, var(--ease-entrance));
+}
+
+.animate-on-scroll-slide-left.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.animate-on-scroll-slide-right {
+  opacity: 0;
+  transform: translateX(calc(-1 * var(--scroll-offset)));
+  transition: opacity var(--animation-duration, var(--anim-normal)) var(--animation-easing, var(--ease-entrance)),
+              transform var(--animation-duration, var(--anim-normal)) var(--animation-easing, var(--ease-entrance));
+}
+
+.animate-on-scroll-slide-right.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Scale animations */
+.animate-on-scroll-scale {
+  opacity: 1; /* Default to visible */
+  transform: scale(1); /* Default to normal scale */
+  transition: opacity var(--animation-duration, var(--anim-normal)) var(--animation-easing, var(--ease-entrance)),
+              transform var(--animation-duration, var(--anim-normal)) var(--animation-easing, var(--ease-entrance));
+}
+
+.animate-on-scroll-scale:not(.visible) {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+.animate-on-scroll-scale.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Enhanced scale-up animation */
+.animate-on-scroll-scale-up {
+  opacity: 1; /* Default to visible */
+  transform: scale(1) translateY(0); /* Default to normal scale and position */
+  transition: opacity var(--animation-duration, var(--anim-normal)) var(--animation-easing, var(--ease-entrance)),
+              transform var(--animation-duration, var(--anim-normal)) var(--animation-easing, var(--ease-entrance));
+}
+
+.animate-on-scroll-scale-up:not(.visible) {
+  opacity: 0;
+  transform: scale(0.9) translateY(20px);
+}
+
+.animate-on-scroll-scale-up.visible {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+/* Enhanced scale-down animation */
+.animate-on-scroll-scale-down {
+  opacity: 1; /* Default to visible */
+  transform: scale(1) translateY(0); /* Default to normal scale and position */
+  transition: opacity var(--animation-duration, var(--anim-normal)) var(--animation-easing, var(--ease-entrance)),
+              transform var(--animation-duration, var(--anim-normal)) var(--animation-easing, var(--ease-entrance));
+}
+
+.animate-on-scroll-scale-down:not(.visible) {
+  opacity: 0;
+  transform: scale(1.1) translateY(-20px);
+}
+
+.animate-on-scroll-scale-down.visible {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+/* Stagger animation utilities */
+.stagger-children > * {
+  animation-delay: calc(var(--stagger-index, 0) * var(--stagger-increment));
+}
+
+.stagger-container {
+  /* Container for staggered animations */
+}
+
+.stagger-container-visible {
+  /* Container is visible and ready for stagger animations */
+}
+
+/* Stagger fade animations */
+.stagger-fade {
+  opacity: 0;
+  transition: opacity var(--anim-normal) var(--ease-entrance);
+  transition-delay: var(--stagger-delay, 0ms);
+}
+
+.stagger-fade.stagger-visible {
+  opacity: 1;
+}
+
+/* Stagger fade-up animations */
+.stagger-fade-up {
+  opacity: 1; /* Default to visible */
+  transform: translateY(0); /* Default to normal position */
+  transition: opacity var(--anim-normal) var(--ease-entrance),
+              transform var(--anim-normal) var(--ease-entrance);
+  transition-delay: var(--stagger-delay, 0ms);
+}
+
+/* Only hide when container is ready for animation */
+.stagger-container .stagger-fade-up {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.stagger-fade-up.stagger-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Enhanced dashboard card animations */
+.dashboard-card-reveal {
+  opacity: 1; /* Default to visible */
+  transform: translateY(0) scale(1); /* Default to normal position and scale */
+  transition: opacity var(--anim-slow) var(--ease-entrance),
+              transform var(--anim-slow) var(--ease-entrance);
+  transition-delay: var(--stagger-delay, 0ms);
+}
+
+/* Only hide when container is ready for animation */
+.stagger-container .dashboard-card-reveal {
+  opacity: 0;
+  transform: translateY(30px) scale(0.95);
+}
+
+.dashboard-card-reveal.stagger-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Enhanced dashboard section animations */
+.dashboard-section-reveal {
+  opacity: 1; /* Default to visible */
+  transform: translateY(0); /* Default to normal position */
+  transition: opacity var(--anim-normal) var(--ease-entrance),
+              transform var(--anim-normal) var(--ease-entrance);
+}
+
+.dashboard-section-reveal:not(.visible) {
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+.dashboard-section-reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Dashboard card hover enhancements */
+.dashboard-card-interactive {
+  transition: transform var(--anim-fast) var(--ease-entrance),
+              box-shadow var(--anim-fast) var(--ease-entrance);
+}
+
+.dashboard-card-interactive:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* File list reveal animations */
+.file-item-reveal {
+  opacity: 1; /* Default to visible */
+  transform: translateX(0); /* Default to normal position */
+  transition: opacity var(--anim-normal) var(--ease-entrance),
+              transform var(--anim-normal) var(--ease-entrance);
+  transition-delay: var(--stagger-delay, 0ms);
+}
+
+/* Only hide when container is ready for animation */
+.stagger-container .file-item-reveal {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+
+.file-item-reveal.stagger-visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Enhanced file grid animations with wave effect */
+.file-grid-item {
+  opacity: 1; /* Default to visible */
+  transform: translateY(0) scale(1); /* Default to normal position and scale */
+  transition: opacity var(--anim-normal) var(--ease-entrance),
+              transform var(--anim-normal) var(--ease-entrance);
+  transition-delay: var(--stagger-delay, 0ms);
+}
+
+/* Only hide when container is ready for animation */
+.stagger-container .file-grid-item {
+  opacity: 0;
+  transform: translateY(25px) scale(0.95);
+}
+
+.file-grid-item.stagger-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* File item hover animations */
+.file-item-interactive {
+  transition: transform var(--anim-fast) var(--ease-entrance),
+              box-shadow var(--anim-fast) var(--ease-entrance);
+}
+
+.file-item-interactive:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Content section reveals */
+.content-section-reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity var(--anim-slow) var(--ease-entrance),
+              transform var(--anim-slow) var(--ease-entrance);
+}
+
+.content-section-reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Landing page specific animations */
+.hero-section-reveal {
+  opacity: 1; /* Default to visible */
+  transform: translateY(0) scale(1); /* Default to normal position and scale */
+  transition: opacity 600ms var(--ease-spring),
+              transform 600ms var(--ease-spring);
+}
+
+.hero-section-reveal:not(.visible) {
+  opacity: 0;
+  transform: translateY(60px) scale(0.98);
+}
+
+.hero-section-reveal.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Enhanced section reveal animations */
+.section-reveal {
+  opacity: 1; /* Default to visible */
+  transform: translateY(0); /* Default to normal position */
+  transition: opacity var(--anim-slow) var(--ease-spring),
+              transform var(--anim-slow) var(--ease-spring);
+}
+
+.section-reveal:not(.visible) {
+  opacity: 0;
+  transform: translateY(50px);
+}
+
+.section-reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Content block animations */
+.content-block-reveal {
+  opacity: 1; /* Default to visible */
+  transform: translateY(0) scale(1); /* Default to normal position and scale */
+  transition: opacity var(--anim-normal) var(--ease-entrance),
+              transform var(--anim-normal) var(--ease-entrance);
+}
+
+.content-block-reveal:not(.visible) {
+  opacity: 0;
+  transform: translateY(30px) scale(0.98);
+}
+
+.content-block-reveal.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.solution-card-reveal {
+  opacity: 0;
+  transform: translateY(50px) rotateX(10deg);
+  transition: opacity var(--anim-slow) var(--ease-entrance),
+              transform var(--anim-slow) var(--ease-entrance);
+  transition-delay: var(--stagger-delay, 0ms);
+}
+
+.solution-card-reveal.stagger-visible {
+  opacity: 1;
+  transform: translateY(0) rotateX(0deg);
+}
+
+.pricing-tier-reveal {
+  opacity: 0;
+  transform: scale(0.9) translateY(30px);
+  transition: opacity var(--anim-normal) var(--ease-bounce),
+              transform var(--anim-normal) var(--ease-bounce);
+  transition-delay: var(--stagger-delay, 0ms);
+}
+
+.pricing-tier-reveal.stagger-visible {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.feature-item-reveal {
+  opacity: 0;
+  transform: translateX(-40px) scale(0.95);
+  transition: opacity var(--anim-normal) var(--ease-entrance),
+              transform var(--anim-normal) var(--ease-entrance);
+  transition-delay: var(--stagger-delay, 0ms);
+}
+
+.feature-item-reveal.stagger-visible {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+}
+
+/* Dashboard specific animations */
+.dashboard-section {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity var(--anim-normal) var(--ease-entrance),
+              transform var(--anim-normal) var(--ease-entrance);
+}
+
+.dashboard-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.file-grid-wave .file-item {
+  opacity: 0;
+  transform: translateY(20px) scale(0.95);
+  transition: opacity var(--anim-normal) var(--ease-entrance),
+              transform var(--anim-normal) var(--ease-entrance);
+  transition-delay: var(--stagger-delay, 0ms);
+}
+
+.file-grid-wave .file-item.stagger-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Enhanced hover states for animated elements */
+.animated-card {
+  transition: transform var(--anim-fast) var(--ease-entrance),
+              box-shadow var(--anim-fast) var(--ease-entrance);
+}
+
+.animated-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Scroll progress indicators */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 3px;
+  background: linear-gradient(90deg, #ff971d, #ff6b35);
+  z-index: 1000;
+  transition: width 0.1s ease-out;
+}
+
+/* Performance optimized animations */
+.gpu-layer {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Stagger fade-down animations */
+.stagger-fade-down {
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity var(--anim-normal) var(--ease-entrance),
+              transform var(--anim-normal) var(--ease-entrance);
+  transition-delay: var(--stagger-delay, 0ms);
+}
+
+.stagger-fade-down.stagger-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger slide animations */
+.stagger-slide-left {
+  opacity: 1; /* Default to visible */
+  transform: translateX(0); /* Default to normal position */
+  transition: opacity var(--anim-normal) var(--ease-entrance),
+              transform var(--anim-normal) var(--ease-entrance);
+  transition-delay: var(--stagger-delay, 0ms);
+}
+
+/* Only hide when container is ready for animation */
+.stagger-container .stagger-slide-left {
+  opacity: 0;
+  transform: translateX(-30px);
+}
+
+.stagger-slide-left.stagger-visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.stagger-slide-right {
+  opacity: 0;
+  transform: translateX(30px);
+  transition: opacity var(--anim-normal) var(--ease-entrance),
+              transform var(--anim-normal) var(--ease-entrance);
+  transition-delay: var(--stagger-delay, 0ms);
+}
+
+.stagger-slide-right.stagger-visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Stagger scale animations */
+.stagger-scale {
+  opacity: 1; /* Default to visible */
+  transform: scale(1); /* Default to normal scale */
+  transition: opacity var(--anim-normal) var(--ease-entrance),
+              transform var(--anim-normal) var(--ease-entrance);
+  transition-delay: var(--stagger-delay, 0ms);
+}
+
+/* Only hide when container is ready for animation */
+.stagger-container .stagger-scale {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+.stagger-scale.stagger-visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Legacy stagger classes for backward compatibility */
+.stagger-fade > * {
+  opacity: 0;
+  animation: fadeIn var(--anim-normal) var(--ease-entrance) var(--animation-fill-mode);
+  animation-delay: calc(var(--stagger-index, 0) * var(--stagger-increment));
+}
+
+.stagger-slide > * {
+  opacity: 0;
+  transform: translateY(var(--scroll-offset));
+  animation: slideUp var(--anim-normal) var(--ease-entrance) var(--animation-fill-mode);
+  animation-delay: calc(var(--stagger-index, 0) * var(--stagger-increment));
+}
+
+/* Micro-interaction classes */
+.interactive-scale {
+  transition: transform var(--anim-fast) var(--ease-entrance);
+  cursor: pointer;
+}
+
+.interactive-scale:hover {
+  transform: scale(1.02);
+}
+
+.interactive-scale:active {
+  transform: scale(0.98);
+}
+
+.interactive-lift {
+  transition: transform var(--anim-fast) var(--ease-entrance),
+              box-shadow var(--anim-fast) var(--ease-entrance);
+}
+
+.interactive-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.interactive-glow {
+  transition: box-shadow var(--anim-fast) var(--ease-entrance);
+}
+
+.interactive-glow:hover {
+  box-shadow: 0 0 20px rgba(255, 151, 29, 0.3);
+}
+
+/* Loading and spinner animations */
+.loading-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 151, 29, 0.3);
+  border-top: 2px solid #ff971d;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.loading-pulse {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.loading-skeleton {
+  background: linear-gradient(90deg, 
+    rgba(255, 151, 29, 0.1) 25%, 
+    rgba(255, 151, 29, 0.2) 50%, 
+    rgba(255, 151, 29, 0.1) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* Page transition utilities */
+.page-enter {
+  opacity: 0;
+  transform: translateX(20px);
+}
+
+.page-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity var(--anim-page) var(--ease-entrance),
+              transform var(--anim-page) var(--ease-entrance);
+}
+
+.page-exit {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.page-exit-active {
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: opacity var(--anim-page) var(--ease-exit),
+              transform var(--anim-page) var(--ease-exit);
+}
+
+/* Modal and overlay animations */
+.modal-backdrop-enter {
+  opacity: 0;
+}
+
+.modal-backdrop-enter-active {
+  opacity: 1;
+  transition: opacity var(--anim-normal) var(--ease-entrance);
+}
+
+.modal-backdrop-exit {
+  opacity: 1;
+}
+
+.modal-backdrop-exit-active {
+  opacity: 0;
+  transition: opacity var(--anim-normal) var(--ease-exit);
+}
+
+.modal-content-enter {
+  opacity: 0;
+  transform: scale(0.9) translateY(-20px);
+}
+
+.modal-content-enter-active {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  transition: opacity var(--anim-normal) var(--ease-bounce),
+              transform var(--anim-normal) var(--ease-bounce);
+}
+
+.modal-content-exit {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.modal-content-exit-active {
+  opacity: 0;
+  transform: scale(0.9) translateY(-20px);
+  transition: opacity var(--anim-normal) var(--ease-exit),
+              transform var(--anim-normal) var(--ease-exit);
+}
+
+/* Keyframe definitions */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(var(--scroll-offset));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(calc(-1 * var(--scroll-offset)));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes scaleOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Performance optimizations */
+.will-animate {
+  will-change: transform, opacity;
+}
+
+.gpu-accelerated {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Utility classes for animation control */
+.animation-paused {
+  animation-play-state: paused !important;
+}
+
+.animation-running {
+  animation-play-state: running !important;
+}
+
+.no-animation {
+  animation: none !important;
+  transition: none !important;
+}
+
+/* Animation delay utilities */
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-500 { animation-delay: 500ms; }
+.delay-700 { animation-delay: 700ms; }
+.delay-1000 { animation-delay: 1000ms; }
+
+/* Animation duration utilities */
+.duration-fast { animation-duration: var(--anim-fast); }
+.duration-normal { animation-duration: var(--anim-normal); }
+.duration-slow { animation-duration: var(--anim-slow); }
+
+/* Transition utilities */
+.transition-all { transition: all var(--anim-fast) var(--ease-entrance); }
+.transition-colors { transition: color var(--anim-fast) var(--ease-entrance), background-color var(--anim-fast) var(--ease-entrance), border-color var(--anim-fast) var(--ease-entrance); }
+.transition-transform { transition: transform var(--anim-fast) var(--ease-entrance); }
+.transition-opacity { transition: opacity var(--anim-fast) var(--ease-entrance); }
+
+/* Focus and accessibility improvements */
+.focus-visible {
+  outline: 2px solid #ff971d;
+  outline-offset: 2px;
+  transition: outline var(--anim-fast) var(--ease-entrance);
+}
+
+/* Button animation classes */
+.btn-animated {
+  transition: all var(--anim-fast) var(--ease-entrance);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-animated:hover {
+  transform: translateY(-1px);
+}
+
+.btn-animated:active {
+  transform: translateY(0);
+}
+
+.btn-ripple {
+  position: relative;
+  overflow: hidden;
+  transition: all var(--anim-fast) var(--ease-entrance);
+}
+
+.btn-ripple::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width var(--anim-normal) var(--ease-entrance),
+              height var(--anim-normal) var(--ease-entrance);
+}
+
+.btn-ripple:active::before {
+  width: 300px;
+  height: 300px;
+}
+
+.btn-loading {
+  position: relative;
+  color: transparent !important;
+}
+
+.btn-loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 16px;
+  height: 16px;
+  margin: -8px 0 0 -8px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* Form animation classes */
+.form-input-animated {
+  transition: border-color var(--anim-fast) var(--ease-entrance),
+              box-shadow var(--anim-fast) var(--ease-entrance),
+              transform var(--anim-fast) var(--ease-entrance);
+}
+
+.form-input-animated:focus {
+  transform: scale(1.01);
+  box-shadow: 0 0 0 3px rgba(255, 151, 29, 0.1);
+}
+
+.form-group-animated .form-label {
+  transition: color var(--anim-fast) var(--ease-entrance),
+              transform var(--anim-fast) var(--ease-entrance);
+}
+
+.form-group-animated:focus-within .form-label {
+  color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.form-error-animated {
+  opacity: 0;
+  transform: translateY(-10px);
+  animation: slideInError var(--anim-normal) var(--ease-entrance) forwards;
+}
+
+.form-success-animated {
+  opacity: 0;
+  transform: translateY(-10px);
+  animation: slideInSuccess var(--anim-normal) var(--ease-entrance) forwards;
+}
+
+/* List and grid stagger animations */
+.stagger-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.stagger-grid > * {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: staggerFadeUp var(--anim-normal) var(--ease-entrance) forwards;
+  animation-delay: calc(var(--stagger-index, 0) * var(--stagger-increment));
+}
+
+.stagger-list > * {
+  opacity: 0;
+  transform: translateX(-20px);
+  animation: staggerSlideRight var(--anim-normal) var(--ease-entrance) forwards;
+  animation-delay: calc(var(--stagger-index, 0) * var(--stagger-increment));
+}
+
+/* Card hover animations */
+.card-hover {
+  transition: transform var(--anim-fast) var(--ease-entrance),
+              box-shadow var(--anim-fast) var(--ease-entrance);
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Navigation animations */
+.nav-item-animated {
+  transition: all var(--anim-fast) var(--ease-entrance);
+  position: relative;
+}
+
+.nav-item-animated::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--accent);
+  transition: width var(--anim-normal) var(--ease-entrance);
+}
+
+.nav-item-animated:hover::after,
+.nav-item-animated.active::after {
+  width: 100%;
+}
+
+/* Additional keyframes for new animations */
+@keyframes slideInError {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInSuccess {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes staggerFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes staggerSlideRight {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .interactive-scale:hover,
+  .interactive-lift:hover {
+    outline: 2px solid;
+  }
+  
+  .btn-animated:focus,
+  .form-input-animated:focus {
+    outline: 3px solid;
+    outline-offset: 2px;
+  }
+}/* Enhance
+d Landing Page Animations */
+.hero-content > * {
+  animation-fill-mode: both;
+}
+
+.hero-badge {
+  animation: scaleInBounce 0.6s ease-out 0.2s;
+}
+
+.hero-heading {
+  animation: fadeInUp 0.8s ease-out 0.4s;
+}
+
+.hero-description {
+  animation: fadeInUp 0.8s ease-out 0.6s;
+}
+
+.hero-cta {
+  animation: fadeInUp 0.8s ease-out 0.8s;
+}
+
+.hero-metrics {
+  animation: fadeInUp 0.8s ease-out 1s;
+}
+
+.hero-visual {
+  animation: slideInFromRight 1s ease-out 0.5s;
+}
+
+/* Smooth scroll progress indicator */
+.scroll-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), #FF6B35);
+  z-index: 10000;
+  transition: width 0.1s ease-out;
+}
+
+/* Enhanced stagger container */
+.stagger-container {
+  position: relative;
+}
+
+.stagger-container-visible {
+  animation: containerReveal 0.3s ease-out;
+}
+
+/* Parallax scroll effects */
+.parallax-element {
+  will-change: transform;
+  transition: transform 0.1s ease-out;
+}
+
+/* Enhanced button animations */
+.btn-enhanced {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-enhanced::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.6s ease, height 0.6s ease;
+}
+
+.btn-enhanced:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+/* Smooth card reveals */
+.card-smooth-reveal {
+  opacity: 0;
+  transform: translateY(40px) scale(0.95);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-smooth-reveal.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Enhanced hover states */
+.hover-lift-smooth {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-lift-smooth:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Smooth text reveals */
+.text-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.text-reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Enhanced keyframes */
+@keyframes containerReveal {
+  from {
+    opacity: 0.8;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes smoothSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(60px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes smoothFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes smoothScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Performance optimizations for smooth animations */
+.smooth-animate {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Reduced motion fallbacks */
+@media (prefers-reduced-motion: reduce) {
+  .hero-badge,
+  .hero-heading,
+  .hero-description,
+  .hero-cta,
+  .hero-metrics,
+  .hero-visual {
+    animation: none;
+  }
+
+  .card-smooth-reveal,
+  .text-reveal {
+    transition: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Additional smooth animation enhancements */
+.smooth-float {
+  animation: gentleFloat 6s ease-in-out infinite;
+}
+
+.smooth-pulse {
+  animation: subtlePulse 4s ease-in-out infinite;
+}
+
+.smooth-glow {
+  animation: pulse-glow 3s ease-in-out infinite alternate;
+}
+
+.smooth-bounce-in {
+  animation: scaleInBounce 0.8s var(--ease-spring);
+}
+
+.smooth-slide-in-left {
+  animation: slideInFromLeft 0.8s var(--ease-spring);
+}
+
+.smooth-slide-in-right {
+  animation: slideInFromRight 0.8s var(--ease-spring);
+}
+
+.smooth-fade-in-up {
+  animation: fadeInUp 0.8s var(--ease-spring);
+}
+
+.smooth-scale-in {
+  animation: smoothScaleIn 0.6s var(--ease-spring);
+}
+
+/* Enhanced stagger animations with smoother timing */
+.stagger-smooth > * {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: smoothStaggerReveal 0.8s var(--ease-spring) forwards;
+  animation-delay: calc(var(--stagger-index, 0) * 150ms);
+}
+
+/* New keyframes for enhanced smoothness */
+@keyframes smoothStaggerReveal {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes enhancedFloat {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-5px) rotate(0.5deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(0deg);
+  }
+  75% {
+    transform: translateY(-5px) rotate(-0.5deg);
+  }
+}
+
+@keyframes smoothParallax {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes enhancedFloat {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-8px) rotate(0.5deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(0deg);
+  }
+  75% {
+    transform: translateY(-8px) rotate(-0.5deg);
+  }
+}
+
+/* Apply smooth animations to landing page elements */
+.landing-page .solution-card {
+  transition: all 0.4s var(--ease-spring);
+}
+
+.landing-page .feature-item {
+  transition: all 0.4s var(--ease-spring);
+}
+
+.landing-page .tier-card {
+  transition: all 0.4s var(--ease-spring);
+}
+
+/* Enhanced interactive elements */
+.interactive-smooth {
+  transition: all 0.3s var(--ease-spring);
+}
+
+.interactive-smooth:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
