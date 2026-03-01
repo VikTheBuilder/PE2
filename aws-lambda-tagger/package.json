@@ -1,0 +1,14 @@
+{
+    "name": "vaultify-ai-tagger",
+    "version": "1.0.0",
+    "description": "AWS Lambda — auto-tags S3 images via Rekognition and updates Vaultify",
+    "type": "module",
+    "main": "index.js",
+    "scripts": {
+        "zip": "zip -r ../vaultify-ai-tagger.zip ."
+    },
+    "dependencies": {
+        "@aws-sdk/client-rekognition": "^3.600.0",
+        "axios": "^1.7.0"
+    }
+}
