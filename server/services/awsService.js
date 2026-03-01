@@ -1,32 +1,84 @@
 /**
- * AWS S3 Service
- * Handles all AWS S3 operations
+ * AWS Service
+ * Handles all AWS S3, EC2, Rekognition, and CloudWatch Logs operations
  */
 
-const { 
-  S3Client, 
-  CreateBucketCommand, 
-  HeadBucketCommand, 
-  PutPublicAccessBlockCommand, 
-  PutBucketEncryptionCommand, 
-  PutBucketOwnershipControlsCommand, 
-  ListBucketsCommand, 
-  PutObjectCommand, 
-  DeleteObjectCommand, 
+const {
+  S3Client,
+  CreateBucketCommand,
+  HeadBucketCommand,
+  PutPublicAccessBlockCommand,
+  PutBucketEncryptionCommand,
+  PutBucketOwnershipControlsCommand,
+  ListBucketsCommand,
+  PutObjectCommand,
+  DeleteObjectCommand,
   GetObjectCommand,
   HeadObjectCommand,
-  ListObjectsV2Command, 
-  DeleteObjectsCommand, 
+  ListObjectsV2Command,
+  DeleteObjectsCommand,
   DeleteBucketCommand,
   ListObjectVersionsCommand,
   AbortMultipartUploadCommand,
   ListMultipartUploadsCommand
 } = require('@aws-sdk/client-s3');
 const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
+
+const {
+  EC2Client,
+  DescribeInstancesCommand,
+  StartInstancesCommand,
+  StopInstancesCommand,
+  TerminateInstancesCommand,
+  RunInstancesCommand,
+  DescribeInstanceStatusCommand
+} = require('@aws-sdk/client-ec2');
+
+const {
+  RekognitionClient,
+  DetectLabelsCommand,
+  DetectTextCommand,
+  DetectModerationLabelsCommand
+} = require('@aws-sdk/client-rekognition');
+
+const {
+  CloudWatchLogsClient,
+  DescribeLogGroupsCommand,
+  GetLogEventsCommand,
+  FilterLogEventsCommand
+} = require('@aws-sdk/client-cloudwatch-logs');
+
 const config = require('../config/environment');
 
 // Initialize S3 client
 const s3Client = config.DEV_MODE ? null : new S3Client({
+  credentials: {
+    accessKeyId: config.AWS_ACCESS_KEY_ID,
+    secretAccessKey: config.AWS_SECRET_ACCESS_KEY,
+  },
+  region: config.AWS_REGION
+});
+
+// Initialize EC2 client
+const ec2Client = config.DEV_MODE ? null : new EC2Client({
+  credentials: {
+    accessKeyId: config.AWS_ACCESS_KEY_ID,
+    secretAccessKey: config.AWS_SECRET_ACCESS_KEY,
+  },
+  region: config.AWS_REGION
+});
+
+// Initialize Rekognition client
+const rekognitionClient = config.DEV_MODE ? null : new RekognitionClient({
+  credentials: {
+    accessKeyId: config.AWS_ACCESS_KEY_ID,
+    secretAccessKey: config.AWS_SECRET_ACCESS_KEY,
+  },
+  region: config.AWS_REGION
+});
+
+// Initialize CloudWatch Logs client
+const cloudWatchLogsClient = config.DEV_MODE ? null : new CloudWatchLogsClient({
   credentials: {
     accessKeyId: config.AWS_ACCESS_KEY_ID,
     secretAccessKey: config.AWS_SECRET_ACCESS_KEY,
@@ -43,7 +95,7 @@ const testAWSConnection = async () => {
 
   console.log(`Testing AWS connection with region: ${config.AWS_REGION}`);
   console.log(`Access Key ID: ${config.AWS_ACCESS_KEY_ID?.substring(0, 8)}...`);
-  
+
   try {
     const command = new ListBucketsCommand({});
     const data = await s3Client.send(command);
@@ -63,7 +115,7 @@ const createUserBucket = async (bucketName) => {
 
   try {
     console.log(`Attempting to create bucket: ${bucketName} in region: ${config.AWS_REGION}`);
-    
+
     const createParams = { Bucket: bucketName };
     if (config.AWS_REGION !== 'us-east-1') {
       createParams.CreateBucketConfiguration = { LocationConstraint: config.AWS_REGION };
@@ -142,12 +194,12 @@ const deleteS3BucketCompletely = async (bucketName) => {
         Bucket: bucketName,
         MaxUploads: 1000
       });
-      
+
       multipartUploads = await s3Client.send(listMultipartCommand);
-      
+
       if (multipartUploads.Uploads && multipartUploads.Uploads.length > 0) {
         console.log(`Found ${multipartUploads.Uploads.length} incomplete multipart uploads`);
-        
+
         for (const upload of multipartUploads.Uploads) {
           try {
             await s3Client.send(new AbortMultipartUploadCommand({
@@ -167,17 +219,17 @@ const deleteS3BucketCompletely = async (bucketName) => {
     console.log('🧹 Step 2: Deleting all object versions...');
     let totalObjectsDeleted = 0;
     let continuationToken;
-    
+
     do {
       const listVersionsCommand = new ListObjectVersionsCommand({
         Bucket: bucketName,
         MaxKeys: 1000,
         KeyMarker: continuationToken
       });
-      
+
       const versionsList = await s3Client.send(listVersionsCommand);
       const objectsToDelete = [];
-      
+
       // Add all versions
       if (versionsList.Versions) {
         versionsList.Versions.forEach(version => {
@@ -187,7 +239,7 @@ const deleteS3BucketCompletely = async (bucketName) => {
           });
         });
       }
-      
+
       // Add all delete markers
       if (versionsList.DeleteMarkers) {
         versionsList.DeleteMarkers.forEach(marker => {
@@ -197,10 +249,10 @@ const deleteS3BucketCompletely = async (bucketName) => {
           });
         });
       }
-      
+
       if (objectsToDelete.length > 0) {
         console.log(`🗑️ Deleting ${objectsToDelete.length} object versions...`);
-        
+
         const deleteCommand = new DeleteObjectsCommand({
           Bucket: bucketName,
           Delete: {
@@ -208,39 +260,39 @@ const deleteS3BucketCompletely = async (bucketName) => {
             Quiet: false
           }
         });
-        
+
         const deleteResult = await s3Client.send(deleteCommand);
         const deletedCount = deleteResult.Deleted ? deleteResult.Deleted.length : 0;
         totalObjectsDeleted += deletedCount;
-        
+
         console.log(`✅ Successfully deleted ${deletedCount} object versions`);
-        
+
         if (deleteResult.Errors && deleteResult.Errors.length > 0) {
           console.error(`❌ Failed to delete ${deleteResult.Errors.length} objects:`, deleteResult.Errors);
         }
       }
-      
+
       continuationToken = versionsList.NextKeyMarker;
     } while (continuationToken);
 
     // Step 3: Final check - delete any remaining objects using ListObjectsV2
     console.log('🧹 Step 3: Final cleanup of any remaining objects...');
     let objectsContinuationToken;
-    
+
     do {
       const listObjectsCommand = new ListObjectsV2Command({
         Bucket: bucketName,
         MaxKeys: 1000,
         ContinuationToken: objectsContinuationToken
       });
-      
+
       const objectsList = await s3Client.send(listObjectsCommand);
-      
+
       if (objectsList.Contents && objectsList.Contents.length > 0) {
         console.log(`🗑️ Found ${objectsList.Contents.length} remaining objects to delete`);
-        
+
         const objectsToDelete = objectsList.Contents.map(obj => ({ Key: obj.Key }));
-        
+
         const deleteCommand = new DeleteObjectsCommand({
           Bucket: bucketName,
           Delete: {
@@ -248,18 +300,18 @@ const deleteS3BucketCompletely = async (bucketName) => {
             Quiet: false
           }
         });
-        
+
         const deleteResult = await s3Client.send(deleteCommand);
         const deletedCount = deleteResult.Deleted ? deleteResult.Deleted.length : 0;
         totalObjectsDeleted += deletedCount;
-        
+
         console.log(`✅ Successfully deleted ${deletedCount} remaining objects`);
-        
+
         if (deleteResult.Errors && deleteResult.Errors.length > 0) {
           console.error(`❌ Failed to delete ${deleteResult.Errors.length} objects:`, deleteResult.Errors);
         }
       }
-      
+
       objectsContinuationToken = objectsList.NextContinuationToken;
     } while (objectsContinuationToken);
 
@@ -267,11 +319,11 @@ const deleteS3BucketCompletely = async (bucketName) => {
 
     // Step 4: Final verification - ensure bucket is empty
     console.log('🔍 Step 4: Verifying bucket is empty...');
-    const finalCheck = await s3Client.send(new ListObjectsV2Command({ 
-      Bucket: bucketName, 
-      MaxKeys: 1 
+    const finalCheck = await s3Client.send(new ListObjectsV2Command({
+      Bucket: bucketName,
+      MaxKeys: 1
     }));
-    
+
     if (finalCheck.Contents && finalCheck.Contents.length > 0) {
       throw new Error(`Bucket still contains ${finalCheck.Contents.length} objects after cleanup`);
     }
@@ -279,9 +331,9 @@ const deleteS3BucketCompletely = async (bucketName) => {
     // Step 5: Delete the bucket
     console.log('🪣 Step 5: Deleting the bucket...');
     await s3Client.send(new DeleteBucketCommand({ Bucket: bucketName }));
-    
+
     console.log(`🎉 Successfully deleted bucket ${bucketName} and all its contents`);
-    
+
   } catch (error) {
     console.error(`❌ Error during bucket deletion for ${bucketName}:`, {
       name: error.name,
@@ -289,20 +341,20 @@ const deleteS3BucketCompletely = async (bucketName) => {
       code: error.Code || error.code,
       statusCode: error.$metadata?.httpStatusCode
     });
-    
+
     if (error.name === 'NoSuchBucket') {
       console.log(`ℹ️ Bucket ${bucketName} doesn't exist (already deleted or never created)`);
       return;
     }
-    
+
     if (error.name === 'BucketNotEmpty') {
       throw new Error(`Bucket ${bucketName} is not empty after cleanup attempts. Manual intervention may be required.`);
     }
-    
+
     if (error.name === 'AccessDenied') {
       throw new Error(`Access denied when trying to delete bucket ${bucketName}. Check AWS permissions.`);
     }
-    
+
     throw error;
   }
 };
@@ -383,10 +435,10 @@ const generatePresignedShareUrl = async (bucketName, key, expiresInSeconds = 360
     });
 
     // Generate presigned URL with custom expiry
-    const signedUrl = await getSignedUrl(s3Client, getCommand, { 
-      expiresIn: expiresInSeconds 
+    const signedUrl = await getSignedUrl(s3Client, getCommand, {
+      expiresIn: expiresInSeconds
     });
-    
+
     console.log(`✅ Generated presigned URL for ${key}, expires in ${expiresInSeconds}s`);
     return signedUrl;
   } catch (error) {
@@ -419,7 +471,46 @@ const getFileMetadata = async (bucketName, key) => {
   }
 };
 
+// Detect image labels using Amazon Rekognition
+const detectImageLabels = async (bucketName, key, maxLabels = 10, minConfidence = 70) => {
+  if (config.DEV_MODE) {
+    console.log(`DEV_MODE: Simulating Rekognition labels for ${key}`);
+    return [
+      { Name: 'Nature', Confidence: 98.5 },
+      { Name: 'Landscape', Confidence: 95.2 },
+      { Name: 'Sky', Confidence: 92.1 },
+      { Name: 'Mountain', Confidence: 88.7 },
+      { Name: 'Outdoors', Confidence: 85.3 }
+    ];
+  }
+
+  try {
+    const command = new DetectLabelsCommand({
+      Image: {
+        S3Object: {
+          Bucket: bucketName,
+          Name: key
+        }
+      },
+      MaxLabels: maxLabels,
+      MinConfidence: minConfidence
+    });
+
+    const response = await rekognitionClient.send(command);
+    console.log(`✅ Rekognition detected ${response.Labels.length} labels for ${key}`);
+
+    return response.Labels.map(label => ({
+      Name: label.Name,
+      Confidence: Math.round(label.Confidence * 10) / 10
+    }));
+  } catch (error) {
+    console.error('❌ Error detecting image labels:', error);
+    throw error;
+  }
+};
+
 module.exports = {
+  // S3
   s3Client,
   testAWSConnection,
   createUserBucket,
@@ -428,5 +519,24 @@ module.exports = {
   deleteFileFromS3,
   checkBucketExists,
   generatePresignedShareUrl,
-  getFileMetadata
+  getFileMetadata,
+  detectImageLabels,
+  // EC2
+  ec2Client,
+  DescribeInstancesCommand,
+  StartInstancesCommand,
+  StopInstancesCommand,
+  TerminateInstancesCommand,
+  RunInstancesCommand,
+  DescribeInstanceStatusCommand,
+  // Rekognition
+  rekognitionClient,
+  DetectLabelsCommand,
+  DetectTextCommand,
+  DetectModerationLabelsCommand,
+  // CloudWatch Logs
+  cloudWatchLogsClient,
+  DescribeLogGroupsCommand,
+  GetLogEventsCommand,
+  FilterLogEventsCommand
 };

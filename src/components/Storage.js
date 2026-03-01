@@ -345,26 +345,34 @@ const Storage = () => {
     return storageClasses[storageClass] || storageClasses['STANDARD'];
   };
 
-  // Generate AI Vision Tags based on file type for display purposes
+  // Get AI tags — supports strings, Rekognition label objects, or fallback by file type
   const getAiTags = (file) => {
-    if (file.aiTags) return file.aiTags;
-    if (file.rekognitionLabels) return file.rekognitionLabels;
+    const raw = file.aiTags || file.rekognitionLabels;
+    if (raw && Array.isArray(raw) && raw.length > 0) {
+      // Normalise: could be ['Nature'] or [{Name:'Nature', Confidence: 98}]
+      return raw.map(t => (typeof t === 'string' ? t : t.Name || String(t)));
+    }
     if (file.isFolder) return [];
     const type = (file.fileType || '').toLowerCase();
-    if (type.startsWith('image')) return ['#Photo', '#Visual'];
-    if (type.startsWith('video')) return ['#Video', '#Media'];
-    if (type.startsWith('audio')) return ['#Audio', '#Sound'];
-    if (type.includes('pdf') || type.includes('document') || type.includes('word')) return ['#Doc', '#Text'];
-    if (type.includes('zip') || type.includes('rar') || type.includes('archive')) return ['#Archive'];
-    if (type.includes('spreadsheet') || type.includes('excel')) return ['#Data', '#Sheet'];
-    return ['#File'];
+    if (type.startsWith('image')) return ['Photo', 'Visual'];
+    if (type.startsWith('video')) return ['Video', 'Media'];
+    if (type.startsWith('audio')) return ['Audio', 'Sound'];
+    if (type.includes('pdf') || type.includes('document') || type.includes('word')) return ['Doc', 'Text'];
+    if (type.includes('zip') || type.includes('rar') || type.includes('archive')) return ['Archive'];
+    if (type.includes('spreadsheet') || type.includes('excel')) return ['Data', 'Sheet'];
+    return ['File'];
   };
 
   const filteredFiles = currentFiles.filter(file => {
-    // Add null checks to prevent errors
+    // Null guard
     if (!file || !file.originalName) return false;
 
-    const matchesSearch = file.originalName.toLowerCase().includes(searchQuery.toLowerCase());
+    const query = searchQuery.toLowerCase().replace(/^#/, ''); // strip leading # for tag searches
+    const matchesName = file.originalName.toLowerCase().includes(query);
+    const matchesTags = getAiTags(file).some(tag =>
+      tag.toLowerCase().replace(/^#/, '').includes(query)
+    );
+    const matchesSearch = query === '' || matchesName || matchesTags;
     const matchesStorageClass = selectedStorageClass === 'all' || file.storageClass === selectedStorageClass;
     return matchesSearch && matchesStorageClass;
   });

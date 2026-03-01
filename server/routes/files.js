@@ -9,7 +9,8 @@ const { randomUUID } = require('crypto');
 
 const config = require('../config/environment');
 const { authenticateToken } = require('../middleware/auth');
-const { readFiles, addFile, updateFile, deleteFile, deleteMultipleFiles, findFileById } = require('../models/File');
+const { readFiles, addFile, updateFile, deleteFile, deleteMultipleFiles, findFileById, writeFiles } = require('../models/File');
+const { readUsers } = require('../models/User');
 const { uploadFileToS3, deleteFileFromS3, checkBucketExists } = require('../services/awsService');
 const { getStorageClassRecommendation, getOptimalStorageClass, getAvailableStorageClasses } = require('../services/storageService');
 const { trackBillingActivity, calculateStorageCost, calculateRequestCost } = require('../services/billingService');
@@ -88,6 +89,64 @@ router.get('/', authenticateToken, async (req, res) => {
   } catch (error) {
     console.error('Get files error:', error);
     res.status(500).json({ error: 'Failed to fetch files' });
+  }
+});
+
+// ── Lambda callback: update AI tags by S3 key ───────────────
+// Called by the aws-lambda-tagger function after Rekognition
+// Auth: Bearer token must match VAULTIFY_API_KEY env var
+router.post('/tags/update', async (req, res) => {
+  try {
+    // Simple API-key auth for Lambda
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+    const expectedKey = process.env.VAULTIFY_API_KEY || config.JWT_SECRET;
+
+    if (!token || token !== expectedKey) {
+      return res.status(401).json({ error: 'Invalid API key' });
+    }
+
+    const { s3Key, labels } = req.body;
+
+    if (!s3Key) {
+      return res.status(400).json({ error: 's3Key is required' });
+    }
+    if (!labels || !Array.isArray(labels)) {
+      return res.status(400).json({ error: 'labels array is required' });
+    }
+
+    // Convert Rekognition labels to simple tag strings
+    const aiTags = labels.map(l => (typeof l === 'string' ? l : l.Name || String(l)));
+
+    // Scan all users to find the file with this s3Key
+    const users = await readUsers();
+    let matched = false;
+
+    for (const user of users) {
+      const files = await readFiles(user.id);
+      const fileIndex = files.findIndex(f => f.s3Key === s3Key);
+
+      if (fileIndex !== -1) {
+        files[fileIndex].aiTags = aiTags;
+        await writeFiles(user.id, files);
+        console.log(`🏷️  Lambda updated AI tags for ${files[fileIndex].originalName} (user ${user.id}): ${aiTags.join(', ')}`);
+        matched = true;
+
+        return res.json({
+          message: 'AI tags updated successfully',
+          fileId: files[fileIndex].id,
+          tags: aiTags
+        });
+      }
+    }
+
+    if (!matched) {
+      console.warn(`⚠️  No file found for s3Key: ${s3Key}`);
+      return res.status(404).json({ error: 'File not found for the given s3Key' });
+    }
+  } catch (error) {
+    console.error('Lambda tag update error:', error);
+    res.status(500).json({ error: 'Failed to update AI tags' });
   }
 });
 
@@ -518,6 +577,68 @@ router.put('/bulk/storage-class', authenticateToken, async (req, res) => {
   } catch (error) {
     console.error('Bulk storage class change error:', error);
     res.status(500).json({ error: 'Bulk storage class change failed' });
+  }
+});
+
+// Update AI tags for a file (called by Lambda or on-demand)
+router.post('/:fileId/tags', authenticateToken, async (req, res) => {
+  try {
+    const { fileId } = req.params;
+    const { tags } = req.body;
+
+    const file = await findFileById(req.user.id, fileId);
+    if (!file) {
+      return res.status(404).json({ error: 'File not found' });
+    }
+
+    let aiTags;
+
+    if (tags && Array.isArray(tags)) {
+      // Tags provided directly (e.g. from Lambda callback)
+      aiTags = tags;
+    } else {
+      // Auto-detect: only works for images
+      const fileType = (file.fileType || '').toLowerCase();
+      if (!fileType.startsWith('image/')) {
+        return res.status(400).json({
+          error: 'Auto-detection is only available for image files. Provide tags in the body for other file types.'
+        });
+      }
+
+      const { detectImageLabels } = require('../services/awsService');
+      const labels = await detectImageLabels(req.user.awsBucketName, file.s3Key);
+      aiTags = labels.map(l => l.Name);
+    }
+
+    const updatedFile = await updateFile(req.user.id, fileId, { aiTags });
+
+    console.log(`🏷️  Updated AI tags for ${file.originalName}: ${aiTags.join(', ')}`);
+
+    res.json({
+      message: 'AI tags updated successfully',
+      file: updatedFile,
+      tags: aiTags
+    });
+  } catch (error) {
+    console.error('Update AI tags error:', error);
+    res.status(500).json({ error: 'Failed to update AI tags' });
+  }
+});
+
+// Get AI tags for a file
+router.get('/:fileId/tags', authenticateToken, async (req, res) => {
+  try {
+    const { fileId } = req.params;
+    const file = await findFileById(req.user.id, fileId);
+
+    if (!file) {
+      return res.status(404).json({ error: 'File not found' });
+    }
+
+    res.json({ tags: file.aiTags || [] });
+  } catch (error) {
+    console.error('Get AI tags error:', error);
+    res.status(500).json({ error: 'Failed to get AI tags' });
   }
 });
 
