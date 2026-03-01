@@ -344,3 +344,115 @@
 .compute-instance-card:nth-child(4) {
     animation-delay: 0.15s;
 }
+
+/* ─── Loading State ──────────────────────────────── */
+.compute-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-4);
+    padding: var(--space-16, 4rem) 0;
+    color: var(--text-tertiary);
+}
+
+.loading-spinner {
+    width: 36px;
+    height: 36px;
+    border: 3px solid rgba(0, 255, 136, 0.15);
+    border-top-color: #00FF88;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.spin {
+    animation: spin 0.7s linear infinite;
+}
+
+.spinning svg {
+    animation: spin 0.7s linear infinite;
+}
+
+/* ─── Error Banner ───────────────────────────────── */
+.compute-error-banner {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-5);
+    background: rgba(255, 85, 85, 0.08);
+    border: 1px solid rgba(255, 85, 85, 0.3);
+    border-radius: var(--radius-lg);
+    color: #FF5555;
+    font-size: var(--text-sm);
+    font-weight: 500;
+    margin-bottom: var(--space-6);
+    animation: fadeIn 0.2s ease-out;
+}
+
+.compute-error-banner svg {
+    flex-shrink: 0;
+    font-size: 1.1rem;
+}
+
+.compute-error-banner span {
+    flex: 1;
+}
+
+.btn-dismiss {
+    background: none;
+    border: none;
+    color: rgba(255, 85, 85, 0.6);
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+    transition: color 0.15s ease, background 0.15s ease;
+}
+
+.btn-dismiss:hover {
+    color: #FF5555;
+    background: rgba(255, 85, 85, 0.1);
+}
+
+/* ─── Empty State ────────────────────────────────── */
+.compute-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+    padding: var(--space-16, 4rem) var(--space-6);
+    text-align: center;
+    color: var(--text-tertiary);
+}
+
+.compute-empty-state .empty-icon {
+    font-size: 3rem;
+    color: rgba(0, 255, 136, 0.25);
+    margin-bottom: var(--space-2);
+}
+
+.compute-empty-state h3 {
+    font-size: var(--text-lg);
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.compute-empty-state p {
+    color: var(--text-tertiary);
+    font-size: var(--text-sm);
+    margin: 0;
+}
+
+/* ─── Terminating Card State ─────────────────────── */
+.compute-instance-card.terminating {
+    opacity: 0.5;
+    pointer-events: none;
+}

@@ -206,6 +206,19 @@ export const fileAPI = {
     const response = await api.get(`/files/${fileId}/download`);
     return response.data.downloadUrl;
   },
+
+  // Update AI tags for a file (triggers Rekognition for images, or accepts manual tags)
+  tagFile: async (fileId, tags = null) => {
+    const body = tags ? { tags } : {};
+    const response = await api.post(`/files/${fileId}/tags`, body);
+    return response.data;
+  },
+
+  // Get AI tags for a file
+  getFileTags: async (fileId) => {
+    const response = await api.get(`/files/${fileId}/tags`);
+    return response.data;
+  },
 };
 
 // Folder management API
@@ -285,6 +298,25 @@ export const billingAPI = {
   },
 
 
+};
+
+
+// Compute (EC2) API
+export const computeAPI = {
+  fetchInstances: async () => {
+    const response = await api.get('/compute');
+    return response.data;
+  },
+
+  launchInstance: async (instanceName) => {
+    const response = await api.post('/compute/launch', { instanceName });
+    return response.data;
+  },
+
+  terminateInstance: async (instanceId) => {
+    const response = await api.delete(`/compute/${instanceId}`);
+    return response.data;
+  }
 };
 
 
