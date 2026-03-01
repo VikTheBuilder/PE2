@@ -93,12 +93,12 @@ const Login = () => {
       >
         ← Back
       </button>
-      {loading && <LoadingScreen message="Preparing your SkyCrate..." />}
+      {loading && <LoadingScreen message="Preparing your Vaultify..." />}
       <div className={`auth-card auth-card-entrance ${isVisible ? 'visible' : ''}`}>
         <div className="auth-header stagger-container">
           <div className="auth-logo stagger-fade-up">
             <FiCloud />
-            <span>SkyCrate</span>
+            <span>Vaultify</span>
           </div>
           <h1 className="stagger-fade-up">Welcome back</h1>
           <p className="stagger-fade-up">Sign in to access your cloud storage</p>

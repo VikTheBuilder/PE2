@@ -1,4 +1,4 @@
-# SkyCrate Data Flow Architecture
+# Vaultify Data Flow Architecture
 
 ## Main Data Flow Diagram
 
@@ -404,4 +404,4 @@ graph TB
 - **Service**: In-memory service state
 - **Storage**: File system caching
 
-This data flow architecture shows how information moves through the SkyCrate system from user interactions to persistent storage, with proper error handling and data transformation at each stage.
+This data flow architecture shows how information moves through the Vaultify system from user interactions to persistent storage, with proper error handling and data transformation at each stage.

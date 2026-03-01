@@ -1,5 +1,5 @@
 /**
- * SkyCrate Server Application
+ * Vaultify Server Application
  * Main server file with modular architecture
  */
 
@@ -27,6 +27,8 @@ const versionRoutes = require('./routes/versions');
 console.log('✅ Version routes loaded');
 const folderRoutes = require('./routes/folders');
 console.log('✅ Folder routes loaded');
+const computeRoutes = require('./routes/compute');
+console.log('✅ Compute routes loaded');
 
 const app = express();
 
@@ -35,10 +37,10 @@ const initializeApp = async () => {
   try {
     // Initialize data directory
     await initializeDataDirectory();
-    
+
     // Test AWS connection
     await testAWSConnection();
-    
+
     console.log('🚀 Application initialized successfully');
   } catch (error) {
     console.error('❌ Failed to initialize application:', error);
@@ -68,8 +70,8 @@ app.use('/api', (req, res, next) => {
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
-  res.json({ 
-    status: 'OK', 
+  res.json({
+    status: 'OK',
     timestamp: new Date().toISOString(),
     environment: config.NODE_ENV,
     version: '1.0.0'
@@ -92,6 +94,8 @@ app.use('/api/versions', versionRoutes);
 console.log('✅ /api/versions registered');
 app.use('/api/folders', folderRoutes);
 console.log('✅ /api/folders registered');
+app.use('/api/compute', computeRoutes);
+console.log('✅ /api/compute registered');
 
 // 404 handler
 app.use('/api/*', (req, res) => {
@@ -101,7 +105,7 @@ app.use('/api/*', (req, res) => {
 // Error handler
 app.use((err, req, res, next) => {
   console.error('Unhandled error:', err);
-  res.status(500).json({ 
+  res.status(500).json({
     error: 'Internal server error',
     details: config.NODE_ENV === 'development' ? err.message : undefined
   });
@@ -110,9 +114,9 @@ app.use((err, req, res, next) => {
 // Start server
 const startServer = async () => {
   await initializeApp();
-  
+
   app.listen(config.PORT, () => {
-    console.log(`🌟 SkyCrate server running on port ${config.PORT}`);
+    console.log(`🌟 Vaultify server running on port ${config.PORT}`);
     console.log(`📍 Environment: ${config.NODE_ENV}`);
     console.log(`🔗 Health check: http://localhost:${config.PORT}/api/health`);
   });

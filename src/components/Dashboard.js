@@ -90,7 +90,7 @@ const Dashboard = () => {
 
     if (!token || !userData) {
       // TEMPORARILY BYPASSED — use demo user for UI preview
-      setUser({ username: 'DemoUser', email: 'demo@skycrate.io' });
+      setUser({ username: 'DemoUser', email: 'demo@vaultify.io' });
       fetchFiles();
       return;
     }
@@ -647,7 +647,7 @@ const Dashboard = () => {
             title={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
             <FiFolder className={`logo-icon ${sidebarCollapsed ? 'rotate' : ''}`} />
-            <span className={`logo-text ${!sidebarCollapsed ? 'slide-in' : ''}`}>SkyCrate</span>
+            <span className={`logo-text ${!sidebarCollapsed ? 'slide-in' : ''}`}>Vaultify</span>
           </div>
         </div>
 

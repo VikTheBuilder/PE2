@@ -1,20 +1,20 @@
-# SkyCrate Billing Architecture: Differential Margin Strategy by Storage Class
+# Vaultify Billing Architecture: Differential Margin Strategy by Storage Class
 
 ## Overview: Why Different Margins for Different Storage Classes?
 
-SkyCrate employs a **differential margin strategy** where markup percentages vary by storage class based on:
+Vaultify employs a **differential margin strategy** where markup percentages vary by storage class based on:
 
 1. **AWS Base Cost Structure** - Lower AWS costs allow higher margins
 2. **User Value Perception** - Premium features justify higher margins
 3. **Market Competition** - Competitive positioning for different use cases
 4. **Cost Recovery Needs** - Ensuring profitability across all service tiers
 
-## Current SkyCrate Billing Architecture
+## Current Vaultify Billing Architecture
 
 ### AWS Billing Flow (Reality)
 
 ```
-AWS Bills ──> SkyCrate IAM Account ──> Entire AWS Account
+AWS Bills ──> Vaultify IAM Account ──> Entire AWS Account
    │                                        │
    └─ All buckets across all users ────────┘
    └─ Single monthly bill for everything
@@ -23,16 +23,16 @@ AWS Bills ──> SkyCrate IAM Account ──> Entire AWS Account
 **Key Points:**
 • AWS bills per IAM account, not per bucket
 • Your single AWS IAM credentials (AWS_ACCESS_KEY_ID + AWS_SECRET_ACCESS_KEY) are used for ALL user buckets
-• AWS sends ONE consolidated bill to the IAM account owner (you/SkyCrate)
+• AWS sends ONE consolidated bill to the IAM account owner (you/Vaultify)
 • All costs from all user buckets appear as line items under your single AWS account
 
-### SkyCrate's Internal Billing (What We Built)
+### Vaultify's Internal Billing (What We Built)
 
 ```
-User Activity ──> SkyCrate Tracking ──> User Bills
+User Activity ──> Vaultify Tracking ──> User Bills
      │                    │                   │
      └─ Upload/Download    └─ Cost Calculation └─ Monthly Invoice
-     └─ Storage Usage      └─ Apply Variable Margins └─ Pay SkyCrate
+     └─ Storage Usage      └─ Apply Variable Margins └─ Pay Vaultify
 ```
 
 #### How It Actually Works
@@ -44,7 +44,7 @@ User Activity ──> SkyCrate Tracking ──> User Bills
 • S3 PUT Requests: 15,420 requests @ $0.005/1K = $0.77
 • Data Transfer Out: 89 GB @ $0.09/GB = $8.01
 
-**2. SkyCrate Side (User Billing)**
+**2. Vaultify Side (User Billing)**
 • Each user sees their individual usage with **variable markups by storage class**:
 • User A: 245 GB Standard @ $0.030/GB = $7.35 (AWS: $5.64, 30% margin)
 • User B: 500 GB Archive @ $0.005/GB = $2.50 (AWS: $1.80, 50% margin)
@@ -62,7 +62,7 @@ From server/index.js:438-440:
 ```javascript
 const bucketName = DEV_MODE
   ? `dev-bucket-${genId()}`
-  : `skycrate-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  : `vaultify-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 ```
 • Each user gets their own unique S3 bucket
 • All buckets use the same IAM credentials
@@ -73,7 +73,7 @@ From server/index.js:375-395:
 ```javascript
 const trackBillingActivity = async (userId, activityType, details) => {
   // Tracks individual user activities
-  // Calculates costs with SkyCrate markup
+  // Calculates costs with Vaultify markup
   // Stores in billing.json for user invoicing
 };
 ```
@@ -82,7 +82,7 @@ const trackBillingActivity = async (userId, activityType, details) => {
 
 | Model | Who Pays AWS Bill | Recipient | Complexity |
 |-------|-------------------|-----------|------------|
-| Current (SkyCrate) | SkyCrate | SkyCrate → Users | Medium |
+| Current (Vaultify) | Vaultify | Vaultify → Users | Medium |
 | Direct AWS | Each User | AWS → Users | High |
 | Consolidated | Organization | Organization | Low |
 
@@ -92,21 +92,21 @@ const trackBillingActivity = async (userId, activityType, details) => {
 1. You pay AWS for ALL user activity across ALL buckets
 2. Single bill covering all users' combined usage
 3. No per-bucket billing from AWS - it's per AWS account
-4. Cost allocation must be done by you (which SkyCrate handles)
+4. Cost allocation must be done by you (which Vaultify handles)
 
-**SkyCrate Revenue**
-• Users pay SkyCrate with 30% markup
-• SkyCrate pays AWS at base rates
+**Vaultify Revenue**
+• Users pay Vaultify with 30% markup
+• Vaultify pays AWS at base rates
 • 30% margin covers infrastructure, support, platform costs
 
 **Cost Tracking Granularity**
-• SkyCrate tracks per-user, per-file, per-operation
+• Vaultify tracks per-user, per-file, per-operation
 • AWS provides account-level billing
 • Your system reconciles the two for accurate user billing
 
-This is why the SkyCrate model works well - you handle the complexity of AWS billing and provide users with simple, transparent usage-based pricing while maintaining profitable margins.
+This is why the Vaultify model works well - you handle the complexity of AWS billing and provide users with simple, transparent usage-based pricing while maintaining profitable margins.
 
-## SkyCrate Billing Architecture Explained
+## Vaultify Billing Architecture Explained
 
 ### AWS Billing Reality (How Amazon Actually Bills)
 
@@ -114,32 +114,32 @@ This is why the SkyCrate model works well - you handle the complexity of AWS bil
 • Your single AWS IAM credentials (AWS_ACCESS_KEY_ID + AWS_SECRET_ACCESS_KEY) are used for ALL user buckets
 • AWS sends ONE consolidated monthly bill to your AWS account
 • All costs from all user buckets appear as line items under your single AWS account
-• You (SkyCrate) pay Amazon directly for all usage across all users
+• You (Vaultify) pay Amazon directly for all usage across all users
 
 **Billing Flow:**
 ```
 All User Buckets → Single AWS Account → One Monthly Bill → You Pay Amazon
-  bucket-user1         Your IAM          $245.67         SkyCrate pays
+  bucket-user1         Your IAM          $245.67         Vaultify pays
   bucket-user2    →    Account      →    Combined    →   Amazon directly
   bucket-user3         Credentials       Usage
 ```
 
-### SkyCrate's Internal Billing System (What We Built)
+### Vaultify's Internal Billing System (What We Built)
 
 **Per-User Cost Tracking:**
-• Each user gets their own S3 bucket (skycrate-{timestamp}-{random})
-• SkyCrate tracks each user's individual usage in server/data/billing.json
-• Users pay SkyCrate with 30% markup over AWS base costs
-• SkyCrate handles AWS billing complexity and provides simple user billing
+• Each user gets their own S3 bucket (vaultify-{timestamp}-{random})
+• Vaultify tracks each user's individual usage in server/data/billing.json
+• Users pay Vaultify with 30% markup over AWS base costs
+• Vaultify handles AWS billing complexity and provides simple user billing
 
 **Revenue Model:**
-User A pays SkyCrate: $7.35 (for their usage + 30% margin)
-User B pays SkyCrate: $12.50 (for their usage + 30% margin)
-User C pays SkyCrate: $18.90 (for their usage + 30% margin)
+User A pays Vaultify: $7.35 (for their usage + 30% margin)
+User B pays Vaultify: $12.50 (for their usage + 30% margin)
+User C pays Vaultify: $18.90 (for their usage + 30% margin)
 Total User Payments: $38.75
 
-AWS Bills SkyCrate: $29.81 (actual AWS costs)
-SkyCrate Profit: $8.94 (30% margin for platform, support, infrastructure)
+AWS Bills Vaultify: $29.81 (actual AWS costs)
+Vaultify Profit: $8.94 (30% margin for platform, support, infrastructure)
 
 ### Cost Allocation Architecture
 
@@ -149,7 +149,7 @@ SkyCrate Profit: $8.94 (30% margin for platform, support, infrastructure)
 • S3 PUT Requests: 15,420 @ $0.005/1K requests
 • Data Transfer Out: 89 GB @ $0.09/GB
 
-**2. SkyCrate Side (User Billing):**
+**2. Vaultify Side (User Billing):**
 • Per-user tracking from server/index.js:375:
 ```javascript
 trackBillingActivity(userId, 'storage', {
@@ -163,7 +163,7 @@ trackBillingActivity(userId, 'storage', {
 **3. User Experience:**
 • Users see transparent usage-based billing
 • Monthly invoices with detailed breakdowns
-• Pay SkyCrate directly (not AWS)
+• Pay Vaultify directly (not AWS)
 • No AWS account required for users
 
 ### Why This Model Works
@@ -174,7 +174,7 @@ trackBillingActivity(userId, 'storage', {
 • Detailed cost breakdowns
 • Professional invoicing
 
-**Benefits for SkyCrate:**
+**Benefits for Vaultify:**
 • Profitable 30% margin
 • Control over user billing
 • Single AWS relationship to manage
@@ -193,8 +193,8 @@ This architecture allows you to build a profitable SaaS while providing users wi
 ```mermaid
 graph TD
     A[AWS Infrastructure Usage] --> B[AWS Consolidated Bill]
-    B --> C[SkyCrate Receives Single Bill]
-    C --> D[SkyCrate Cost Allocation Engine]
+    B --> C[Vaultify Receives Single Bill]
+    C --> D[Vaultify Cost Allocation Engine]
     D --> E[Per-User Cost Tracking]
     E --> F[Apply Service Margins]
     F --> G[User Billing & Invoicing]
@@ -206,7 +206,7 @@ graph TD
         A4[Other AWS Services]
     end
 
-    subgraph "SkyCrate Processing"
+    subgraph "Vaultify Processing"
         D1[Cost Allocation Logic]
         D2[Per-User Tracking]
         D3[Margin Application]
@@ -248,7 +248,7 @@ graph TD
 
 **Pricing Breakdown:**
 - AWS Base Cost: $0.023/GB
-- SkyCrate Markup: 30% ($0.007/GB)
+- Vaultify Markup: 30% ($0.007/GB)
 - User Price: $0.030/GB
 - **Best For:** Frequently accessed files, active data
 
@@ -262,7 +262,7 @@ graph TD
 
 **Pricing Breakdown:**
 - AWS Base Cost: $0.0125/GB + monitoring fees
-- SkyCrate Markup: 30% ($0.00375/GB)
+- Vaultify Markup: 30% ($0.00375/GB)
 - User Price: $0.01625/GB
 - **Best For:** Users who want "set it and forget it" storage
 
@@ -276,7 +276,7 @@ graph TD
 
 **Pricing Breakdown:**
 - AWS Base Cost: $0.0125/GB + retrieval fees
-- SkyCrate Markup: 35% ($0.004375/GB)
+- Vaultify Markup: 35% ($0.004375/GB)
 - User Price: $0.016875/GB
 - **Best For:** Large files accessed infrequently
 
@@ -290,7 +290,7 @@ graph TD
 
 **Pricing Breakdown:**
 - AWS Base Cost: $0.01/GB
-- SkyCrate Markup: 40% ($0.004/GB)
+- Vaultify Markup: 40% ($0.004/GB)
 - User Price: $0.014/GB
 - **Best For:** Non-critical data, backups, test environments
 
@@ -304,7 +304,7 @@ graph TD
 
 **Pricing Breakdown:**
 - AWS Base Cost: $0.004/GB
-- SkyCrate Markup: 45% ($0.0018/GB)
+- Vaultify Markup: 45% ($0.0018/GB)
 - User Price: $0.0058/GB
 - **Best For:** Archive data needing instant access
 
@@ -318,7 +318,7 @@ graph TD
 
 **Pricing Breakdown:**
 - AWS Base Cost: $0.0036/GB
-- SkyCrate Markup: 50% ($0.0018/GB)
+- Vaultify Markup: 50% ($0.0018/GB)
 - User Price: $0.0054/GB
 - **Best For:** Long-term archives with flexible access needs
 
@@ -332,7 +332,7 @@ graph TD
 
 **Pricing Breakdown:**
 - AWS Base Cost: $0.00099/GB
-- SkyCrate Markup: 60% ($0.000594/GB)
+- Vaultify Markup: 60% ($0.000594/GB)
 - User Price: $0.001584/GB
 - **Best For:** Compliance archives, long-term backups
 
@@ -346,19 +346,19 @@ graph TD
 
 **API Requests:**
 - AWS Base: $0.005/1K uploads, $0.0004/1K downloads
-- SkyCrate: 30% markup across all request types
+- Vaultify: 30% markup across all request types
 - User Price: $0.0065/1K uploads, $0.00052/1K downloads
 
 **Data Transfer:**
 - AWS Base: $0.09/GB after 10GB free
-- SkyCrate: 30% markup + 10GB free tier
+- Vaultify: 30% markup + 10GB free tier
 - User Price: $0.117/GB after free allowance
 
 ## Revenue Model: Differential Margins in Action
 
 ### Mixed Storage Class Usage Example
 
-| User | Storage Class | Size | AWS Cost | Margin % | SkyCrate Price | Profit |
+| User | Storage Class | Size | AWS Cost | Margin % | Vaultify Price | Profit |
 |------|---------------|------|----------|----------|----------------|--------|
 | **User A (Frequent Access)** | Standard | 100 GB | $2.30 | 30% | $3.00 | $0.70 |
 | **User B (Cost Optimization)** | Standard-IA | 500 GB | $6.25 | 35% | $8.44 | $2.19 |
@@ -439,9 +439,9 @@ const calculateStorageCost = (fileSize, storageClass) => {
 
 ```javascript
 // WHY DIFFERENT MARGINS:
-// 1. AWS base cost decreases → SkyCrate margin increases
-// 2. User convenience decreases → SkyCrate margin increases
-// 3. Support complexity increases → SkyCrate margin increases
+// 1. AWS base cost decreases → Vaultify margin increases
+// 2. User convenience decreases → Vaultify margin increases
+// 3. Support complexity increases → Vaultify margin increases
 
 const marginStrategy = {
   // High AWS cost + high convenience = low margin (30%)
@@ -520,7 +520,7 @@ const activity = {
 
 ## Conclusion: Differential Margin Strategy Success
 
-SkyCrate's **differential margin strategy** maximizes profitability while maintaining user satisfaction through intelligent pricing tiers:
+Vaultify's **differential margin strategy** maximizes profitability while maintaining user satisfaction through intelligent pricing tiers:
 
 ### Why This Strategy Works
 
@@ -548,4 +548,4 @@ SkyCrate's **differential margin strategy** maximizes profitability while mainta
 | Glacier | Low | Low | High | 50% | Premium for complexity |
 | Deep Archive | Lowest | Lowest | Highest | 60% | Maximize on cheap storage |
 
-The "hidden costs" (differential service margins) enable SkyCrate to profitably operate a cloud storage SaaS while providing users with simple, transparent pricing that reflects the true value of each storage tier.
+The "hidden costs" (differential service margins) enable Vaultify to profitably operate a cloud storage SaaS while providing users with simple, transparent pricing that reflects the true value of each storage tier.

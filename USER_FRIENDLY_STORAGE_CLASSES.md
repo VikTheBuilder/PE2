@@ -1,15 +1,15 @@
-# SkyCrate's User-Friendly Storage Classes
+# Vaultify's User-Friendly Storage Classes
 
 ## 🎯 Our Unique Selling Proposition (USP)
 
-SkyCrate transforms complex AWS S3 storage classes into simple, intuitive choices that anyone can understand. Instead of technical jargon like "STANDARD_IA" or "GLACIER_IR", we use friendly names that tell you exactly what each storage type is for.
+Vaultify transforms complex AWS S3 storage classes into simple, intuitive choices that anyone can understand. Instead of technical jargon like "STANDARD_IA" or "GLACIER_IR", we use friendly names that tell you exactly what each storage type is for.
 
-## 🚀 The SkyCrate Storage Classes
+## 🚀 The Vaultify Storage Classes
 
 ### 🤖 Intelligent Tiering Storage
 **AWS Name:** `INTELLIGENT_TIERING`
 **Base Cost:** $0.0125/GB/month
-**SkyCrate Price:** $0.016/GB/month (30% service margin)
+**Vaultify Price:** $0.016/GB/month (30% service margin)
 **Perfect For:** Files with unpredictable access patterns
 
 **What it's for:**
@@ -26,7 +26,7 @@ SkyCrate transforms complex AWS S3 storage classes into simple, intuitive choice
 ### ⚡ Lightning Fast Storage
 **AWS Name:** `STANDARD`  
 **Base Cost:** $0.023/GB/month  
-**SkyCrate Price:** $0.029/GB/month (25% service margin)  
+**Vaultify Price:** $0.029/GB/month (25% service margin)  
 **Perfect For:** Files you use every day
 
 **What it's for:**
@@ -43,7 +43,7 @@ SkyCrate transforms complex AWS S3 storage classes into simple, intuitive choice
 ### 💎 Smart Saver Storage
 **AWS Name:** `STANDARD_IA`  
 **Base Cost:** $0.0125/GB/month  
-**SkyCrate Price:** $0.017/GB/month (35% service margin)  
+**Vaultify Price:** $0.017/GB/month (35% service margin)  
 **Perfect For:** Large files you don't access often
 
 **What it's for:**
@@ -60,7 +60,7 @@ SkyCrate transforms complex AWS S3 storage classes into simple, intuitive choice
 ### 🎯 Budget Smart Storage
 **AWS Name:** `ONEZONE_IA`  
 **Base Cost:** $0.01/GB/month  
-**SkyCrate Price:** $0.014/GB/month (40% service margin)  
+**Vaultify Price:** $0.014/GB/month (40% service margin)  
 **Perfect For:** Non-critical files with maximum savings
 
 **What it's for:**
@@ -77,7 +77,7 @@ SkyCrate transforms complex AWS S3 storage classes into simple, intuitive choice
 ### 🏔️ Archive Pro Storage
 **AWS Name:** `GLACIER_IR`  
 **Base Cost:** $0.004/GB/month  
-**SkyCrate Price:** $0.006/GB/month (45% service margin)  
+**Vaultify Price:** $0.006/GB/month (45% service margin)  
 **Perfect For:** Important backups with ultra-low costs
 
 **What it's for:**
@@ -94,7 +94,7 @@ SkyCrate transforms complex AWS S3 storage classes into simple, intuitive choice
 ### 🧊 Deep Freeze Storage
 **AWS Name:** `GLACIER`  
 **Base Cost:** $0.0036/GB/month  
-**SkyCrate Price:** $0.005/GB/month (50% service margin)  
+**Vaultify Price:** $0.005/GB/month (50% service margin)  
 **Perfect For:** Long-term storage you rarely access
 
 **What it's for:**
@@ -111,7 +111,7 @@ SkyCrate transforms complex AWS S3 storage classes into simple, intuitive choice
 ### 🏛️ Vault Keeper Storage
 **AWS Name:** `DEEP_ARCHIVE`  
 **Base Cost:** $0.00099/GB/month  
-**SkyCrate Price:** $0.002/GB/month (60% service margin)  
+**Vaultify Price:** $0.002/GB/month (60% service margin)  
 **Perfect For:** Permanent archives and compliance
 
 **What it's for:**
@@ -125,7 +125,7 @@ SkyCrate transforms complex AWS S3 storage classes into simple, intuitive choice
 
 ## 💰 Tiered Margin Strategy
 
-SkyCrate uses a smart tiered margin system that reflects the value provided for each storage class:
+Vaultify uses a smart tiered margin system that reflects the value provided for each storage class:
 
 ### Margin Structure
 - **Intelligent Tiering (30% margin)** - Automated optimization service
@@ -143,22 +143,22 @@ SkyCrate uses a smart tiered margin system that reflects the value provided for 
 4. **Service differentiation** - Higher margins fund better AI recommendations and support
 
 ### Revenue Optimization
-SkyCrate uses **variable margins** based on the value provided by each storage class:
+Vaultify uses **variable margins** based on the value provided by each storage class:
 
 ```
 Example: 100GB mixed storage with variable margins
-- Intelligent Tiering (10GB): $0.13/month → SkyCrate: $0.17/month (30% margin)
-- Lightning Fast (20GB): $0.46/month → SkyCrate: $0.58/month (25% margin)
-- Smart Saver (30GB): $0.38/month → SkyCrate: $0.51/month (35% margin)
-- Archive Pro (40GB): $0.16/month → SkyCrate: $0.23/month (45% margin)
+- Intelligent Tiering (10GB): $0.13/month → Vaultify: $0.17/month (30% margin)
+- Lightning Fast (20GB): $0.46/month → Vaultify: $0.58/month (25% margin)
+- Smart Saver (30GB): $0.38/month → Vaultify: $0.51/month (35% margin)
+- Archive Pro (40GB): $0.16/month → Vaultify: $0.23/month (45% margin)
 Total AWS Cost: $1.13/month
-Total SkyCrate Revenue: $1.49/month
+Total Vaultify Revenue: $1.49/month
 Profit Margin: $0.36/month (32% weighted average)
 ```
 
 ## 🤖 Automatic Smart Recommendations
 
-SkyCrate's AI automatically suggests the best storage type based on:
+Vaultify's AI automatically suggests the best storage type based on:
 
 ### File Type Intelligence
 - **Photos & Videos** → Lightning Fast (for active editing) or Smart Saver (for archives)
@@ -178,7 +178,7 @@ SkyCrate's AI automatically suggests the best storage type based on:
 
 ## 💡 User Experience Benefits
 
-### Before SkyCrate (Traditional AWS):
+### Before Vaultify (Traditional AWS):
 ```
 ❌ "Choose between STANDARD, STANDARD_IA, ONEZONE_IA, GLACIER_IR, GLACIER, DEEP_ARCHIVE"
 ❌ Users confused by technical terms
@@ -186,7 +186,7 @@ SkyCrate's AI automatically suggests the best storage type based on:
 ❌ Complex pricing calculations
 ```
 
-### After SkyCrate (User-Friendly):
+### After Vaultify (User-Friendly):
 ```
 ✅ "Choose between Lightning Fast, Smart Saver, Archive Pro, Deep Freeze, Vault Keeper"
 ✅ Clear descriptions of what each is for
@@ -264,4 +264,4 @@ Each storage class has:
 
 ---
 
-**Result:** SkyCrate makes cloud storage simple, smart, and savings-focused. Users get the power of AWS S3 with the simplicity of consumer-friendly naming and AI-powered optimization.
+**Result:** Vaultify makes cloud storage simple, smart, and savings-focused. Users get the power of AWS S3 with the simplicity of consumer-friendly naming and AI-powered optimization.

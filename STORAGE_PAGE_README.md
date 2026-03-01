@@ -1,4 +1,4 @@
-# Storage Page - SkyCrate
+# Storage Page - Vaultify
 
 ## Overview
 The Storage page provides comprehensive analytics and management for your cloud storage, showing detailed information about storage classes, file sizes, and costs.

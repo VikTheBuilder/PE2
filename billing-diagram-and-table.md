@@ -1,16 +1,16 @@
-# SkyCrate Billing Architecture: Complete Billing Flow with Hidden Costs
+# Vaultify Billing Architecture: Complete Billing Flow with Hidden Costs
 
 ## Overview
 
-SkyCrate implements a sophisticated billing system that sits between AWS's raw costs and user pricing. This document explains the complete billing flow, including the "hidden costs" that represent SkyCrate's profit margins.
+Vaultify implements a sophisticated billing system that sits between AWS's raw costs and user pricing. This document explains the complete billing flow, including the "hidden costs" that represent Vaultify's profit margins.
 
 ## Billing Flow Diagram
 
 ```mermaid
 graph TD
     A[AWS Infrastructure Usage] --> B[AWS Consolidated Bill]
-    B --> C[SkyCrate Receives Single Bill]
-    C --> D[SkyCrate Cost Allocation]
+    B --> C[Vaultify Receives Single Bill]
+    C --> D[Vaultify Cost Allocation]
     D --> E[Per-User Cost Tracking]
     E --> F[Apply 30% Service Margin]
     F --> G[User Billing & Invoicing]
@@ -22,7 +22,7 @@ graph TD
         A4[Other AWS Services]
     end
 
-    subgraph "SkyCrate Side (User-Facing Costs)"
+    subgraph "Vaultify Side (User-Facing Costs)"
         U1[Storage: $0.030/GB (+30%)]
         U2[Requests: $0.0065/1K (+30%)]
         U3[Transfer: $0.117/GB (+30%)]
@@ -47,13 +47,13 @@ graph TD
 - **Consolidated Billing**: AWS sends ONE bill covering all users' combined usage
 - **No Per-Bucket Billing**: AWS bills per account, not per user bucket
 
-### 2. SkyCrate's Value Addition
+### 2. Vaultify's Value Addition
 - **Cost Allocation**: Distributes AWS costs across individual users
 - **Simplified Pricing**: Users see clean, predictable pricing
 - **Service Margin**: 30% markup covers infrastructure, support, and profit
 
 ### 3. Hidden Costs (Profit Margins)
-The "hidden costs" are SkyCrate's profit margins built into the pricing:
+The "hidden costs" are Vaultify's profit margins built into the pricing:
 
 | Component | AWS Base Cost | Markup % | User Price | Profit Margin |
 |-----------|---------------|----------|------------|---------------|
@@ -75,7 +75,7 @@ The "hidden costs" are SkyCrate's profit margins built into the pricing:
 
 ### Scenario: 3 Users with Different Usage Patterns
 
-| User | Storage Usage | AWS Cost | SkyCrate Price | User Pays | Profit |
+| User | Storage Usage | AWS Cost | Vaultify Price | User Pays | Profit |
 |------|---------------|----------|----------------|-----------|--------|
 | User A (Light) | 100GB Standard | $2.30 | $3.00 | $3.00 | $0.70 |
 | User B (Medium) | 500GB Mixed | $8.75 | $11.38 | $11.38 | $2.63 |
@@ -83,8 +83,8 @@ The "hidden costs" are SkyCrate's profit margins built into the pricing:
 | **Total** | **2.6TB** | **$13.03** | **$17.55** | **$17.55** | **$4.52** |
 
 ### Monthly Revenue Breakdown
-- **Total AWS Costs**: $13.03 (what SkyCrate pays Amazon)
-- **Total User Revenue**: $17.55 (what users pay SkyCrate)
+- **Total AWS Costs**: $13.03 (what Vaultify pays Amazon)
+- **Total User Revenue**: $17.55 (what users pay Vaultify)
 - **Gross Profit**: $4.52 (35% margin)
 - **Profit Percentage**: 35% of revenue
 
@@ -115,7 +115,7 @@ The "hidden costs" are SkyCrate's profit margins built into the pricing:
 
 ## Cost Allocation Architecture
 
-### How SkyCrate Tracks Per-User Costs
+### How Vaultify Tracks Per-User Costs
 
 ```javascript
 // From server/services/billingService.js
@@ -149,7 +149,7 @@ const calculateStorageCost = (fileSize, storageClass) => {
 
 ### What Users Don't See (Hidden Costs)
 - ❌ Exact AWS base pricing
-- ❌ SkyCrate's profit margins
+- ❌ Vaultify's profit margins
 - ❌ AWS account-level billing complexity
 - ❌ Infrastructure and operational costs
 
@@ -172,11 +172,11 @@ const calculateStorageCost = (fileSize, storageClass) => {
 
 ## Conclusion
 
-SkyCrate's billing system successfully transforms AWS's complex, account-level billing into simple, user-friendly pricing while maintaining healthy profit margins. The "hidden costs" (30% service margin) fund the platform's operations, support, and profitability, providing value through:
+Vaultify's billing system successfully transforms AWS's complex, account-level billing into simple, user-friendly pricing while maintaining healthy profit margins. The "hidden costs" (30% service margin) fund the platform's operations, support, and profitability, providing value through:
 
 - Simplified user experience
 - Professional billing and support
 - Cost optimization features
 - Reliable infrastructure
 
-This model allows SkyCrate to operate profitably while providing users with transparent, predictable cloud storage pricing without AWS complexity.
+This model allows Vaultify to operate profitably while providing users with transparent, predictable cloud storage pricing without AWS complexity.

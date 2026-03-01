@@ -80,7 +80,7 @@ Created `server/cleanup-bucket.js` for manual bucket cleanup:
 npm run cleanup-bucket <bucket-name>
 
 # Example
-npm run cleanup-bucket skycrate-1234567890-abc123
+npm run cleanup-bucket vaultify-1234567890-abc123
 ```
 
 ### 4. Improved Frontend Error Handling
@@ -113,7 +113,7 @@ npm run cleanup-bucket your-bucket-name
 ### Server Logs
 The enhanced logging provides detailed information:
 ```
-🔍 Starting comprehensive S3 bucket cleanup for: skycrate-1234567890-abc123
+🔍 Starting comprehensive S3 bucket cleanup for: vaultify-1234567890-abc123
 🧹 Step 1: Aborting incomplete multipart uploads...
 🧹 Step 2: Deleting all object versions...
 🗑️ Deleting 150 object versions...
@@ -121,7 +121,7 @@ The enhanced logging provides detailed information:
 🧹 Step 3: Final cleanup of any remaining objects...
 🔍 Step 4: Verifying bucket is empty...
 🪣 Step 5: Deleting the bucket...
-🎉 Successfully deleted bucket skycrate-1234567890-abc123 and all its contents
+🎉 Successfully deleted bucket vaultify-1234567890-abc123 and all its contents
 ```
 
 ### Error Logs

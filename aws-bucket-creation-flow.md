@@ -1,7 +1,7 @@
 # AWS S3 Bucket Creation Flow Diagram
 
 ## Overview
-This diagram illustrates the complete flow for creating and configuring an AWS S3 bucket in the SkyCrate application.
+This diagram illustrates the complete flow for creating and configuring an AWS S3 bucket in the Vaultify application.
 
 ```mermaid
 graph TD
@@ -60,7 +60,7 @@ graph TD
 
 ### 3. Generate Bucket Name
 - System generates unique bucket name using user ID
-- Format: `skycrate-{userId}-{timestamp}`
+- Format: `vaultify-{userId}-{timestamp}`
 - Ensures global uniqueness across AWS
 
 ### 4. Check Bucket Exists

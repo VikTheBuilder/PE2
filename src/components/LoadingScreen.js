@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FiCloud } from 'react-icons/fi';
 import './LoadingScreen.css';
 
-const LoadingScreen = ({ message = 'Loading your SkyCrate...' }) => {
+const LoadingScreen = ({ message = 'Loading your Vaultify...' }) => {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
@@ -28,7 +28,7 @@ const LoadingScreen = ({ message = 'Loading your SkyCrate...' }) => {
         <FiCloud className="loading-cloud" />
         <div className="loading-box" />
       </div>
-      <div className="loading-brand shiny">SkyCrate</div>
+      <div className="loading-brand shiny">Vaultify</div>
       <div className="loading-message">{message}</div>
       <div className="loading-progress">
         <div className="loading-progress-bar" style={{ width: `${progress}%` }} />

@@ -1,4 +1,4 @@
-# SkyCrate System Architecture Overview
+# Vaultify System Architecture Overview
 
 ## High-Level Architecture Diagram
 

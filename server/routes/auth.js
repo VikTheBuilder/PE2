@@ -35,7 +35,7 @@ router.post('/register', async (req, res) => {
     // Generate unique bucket name
     const bucketName = config.DEV_MODE
       ? `dev-bucket-${randomUUID()}`
-      : `skycrate-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+      : `vaultify-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
     // Create S3 bucket
     try {

@@ -149,7 +149,7 @@ function validateAgainstSchema(obj, schema) {
  */
 export class BillingStateManager {
   constructor() {
-    this.storageKey = 'skycrate_billing_state';
+    this.storageKey = 'vaultify_billing_state';
     this.maxStorageAge = 24 * 60 * 60 * 1000; // 24 hours
     this.validationCache = new Map();
   }

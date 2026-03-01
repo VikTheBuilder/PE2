@@ -1,7 +1,7 @@
-# SkyCrate File Versioning System
+# Vaultify File Versioning System
 
 ## 🎯 **Overview**
-SkyCrate provides comprehensive file versioning that allows users to:
+Vaultify provides comprehensive file versioning that allows users to:
 - Keep multiple versions of the same file
 - Restore previous versions easily
 - Track version history with metadata
@@ -242,4 +242,4 @@ const VersionHistory = ({ fileId, onVersionRestore }) => {
 
 ---
 
-**Result**: A comprehensive file versioning system that enhances SkyCrate's value proposition while generating additional revenue through increased storage usage and premium feature adoption.
+**Result**: A comprehensive file versioning system that enhances Vaultify's value proposition while generating additional revenue through increased storage usage and premium feature adoption.

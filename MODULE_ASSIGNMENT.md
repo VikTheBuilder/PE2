@@ -1,7 +1,7 @@
-# SkyCrate Project Module Assignment
+# Vaultify Project Module Assignment
 
 ## Overview
-This document outlines the complete reassignment of SkyCrate's features. Person 5 has been assigned research and UI improvement tasks, while Persons 1-4 handle the core functional modules with some consolidation for balanced workload distribution.
+This document outlines the complete reassignment of Vaultify's features. Person 5 has been assigned research and UI improvement tasks, while Persons 1-4 handle the core functional modules with some consolidation for balanced workload distribution.
 
 ## Module Breakdown
 

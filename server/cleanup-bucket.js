@@ -195,7 +195,7 @@ const main = async () => {
   
   if (!bucketName) {
     console.error('❌ Usage: node cleanup-bucket.js <bucket-name>');
-    console.error('Example: node cleanup-bucket.js skycrate-1234567890-abc123');
+    console.error('Example: node cleanup-bucket.js vaultify-1234567890-abc123');
     process.exit(1);
   }
   

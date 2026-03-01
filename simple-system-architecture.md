@@ -1,4 +1,4 @@
-# SkyCrate Simple System Architecture
+# Vaultify Simple System Architecture
 
 ## Current System Architecture
 
@@ -233,4 +233,4 @@ graph TB
 - No comprehensive monitoring
 - Limited error tracking
 
-This architecture represents the current implemented functionality of the SkyCrate application, focusing on core file management, storage optimization, versioning, and sharing capabilities.
+This architecture represents the current implemented functionality of the Vaultify application, focusing on core file management, storage optimization, versioning, and sharing capabilities.

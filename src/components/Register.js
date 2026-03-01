@@ -147,7 +147,7 @@ const Register = () => {
       <div className={`auth-card auth-card-entrance ${isVisible ? 'visible' : ''}`}>
         <div className="auth-header stagger-container">
           <div className="auth-logo stagger-fade-up">
-            <FiCloud /> SkyCrate
+            <FiCloud /> Vaultify
           </div>
           <h1 className="stagger-fade-up">Register</h1>
           <p className="stagger-fade-up">Create your account to access your cloud storage</p>

@@ -715,7 +715,7 @@ const DashboardBilling = () => {
         <div className="pricing-modal">
           <div className="pricing-content">
             <div className="pricing-header">
-              <h3>SkyCrate Pay-As-You-Go Pricing</h3>
+              <h3>Vaultify Pay-As-You-Go Pricing</h3>
               {pricingStructure.margin && (
                 <div className="margin-notice">
                   Includes {pricingStructure.margin}% service margin over AWS costs

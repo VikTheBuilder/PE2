@@ -1,4 +1,4 @@
-# SkyCrate - Cloud Storage Platform
+# Vaultify - Cloud Storage Platform
 
 A modern cloud storage platform with **Pay-As-You-Go billing** built with React, Node.js, and AWS S3.
 
@@ -82,7 +82,7 @@ npm start
 ## 📂 Project Structure
 
 ```
-skycrate/
+vaultify/
 ├── src/                          # React Frontend
 │   ├── components/
 │   │   ├── DashboardBilling.js   # Pay-as-you-go billing UI
@@ -225,4 +225,4 @@ MIT License - see LICENSE file for details
 
 ---
 
-**SkyCrate** - Simple cloud storage with transparent billing 🚀
+**Vaultify** - Simple cloud storage with transparent billing 🚀

@@ -19,6 +19,10 @@ const config = {
   AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
   AWS_REGION: process.env.AWS_REGION || 'us-east-1',
 
+  // AWS Lambda & EC2 Defaults
+  AWS_LAMBDA_FUNCTION_NAME: process.env.AWS_LAMBDA_FUNCTION_NAME || '',
+  EC2_DEFAULT_AMI: process.env.EC2_DEFAULT_AMI || 'ami-0c02fb55956c7d316', // Amazon Linux 2 (us-east-1)
+
   // Development Mode
   DEV_MODE: process.env.DEV_MODE === 'true',
 
@@ -75,6 +79,8 @@ if (config.NODE_ENV === 'development') {
   console.log(`  - Port: ${config.PORT}`);
   console.log(`  - AWS Region: ${config.AWS_REGION}`);
   console.log(`  - Dev Mode: ${config.DEV_MODE}`);
+  console.log(`  - Lambda Function: ${config.AWS_LAMBDA_FUNCTION_NAME || '(not set)'}`);
+  console.log(`  - EC2 Default AMI: ${config.EC2_DEFAULT_AMI}`);
   console.log(`  - Site Margin: ${config.SITE_MARGIN}%`);
 }
 

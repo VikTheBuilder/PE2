@@ -1,4 +1,4 @@
-# SkyCrate User Authentication Flow
+# Vaultify User Authentication Flow
 
 ## Authentication Flow Overview
 
@@ -273,7 +273,7 @@ sequenceDiagram
 {
   "userId": "user-uuid",
   "email": "user@example.com",
-  "bucketName": "skycrate-user-uuid-timestamp",
+  "bucketName": "vaultify-user-uuid-timestamp",
   "iat": 1640995200,
   "exp": 1641004800,
   "jti": "token-uuid"
@@ -354,7 +354,7 @@ CLIENT_ORIGIN=http://localhost:3000
 ### JWT Configuration
 - **Algorithm**: HS256 (HMAC using SHA-256)
 - **Expiry**: 24 hours (configurable)
-- **Issuer**: SkyCrate Application
-- **Audience**: SkyCrate Users
+- **Issuer**: Vaultify Application
+- **Audience**: Vaultify Users
 
 This authentication flow provides a secure, user-friendly experience with proper error handling, automatic token management, and comprehensive security measures throughout the application.

@@ -102,7 +102,7 @@ const LandingPage = () => {
           <div className="nav-content">
             <div className="nav-brand">
               <FiCloud className="brand-icon" />
-              <span className="brand-text">SkyCrate</span>
+              <span className="brand-text">Vaultify</span>
             </div>
 
             <div className={`nav-menu ${mobileMenuOpen ? 'nav-menu-open' : ''}`}>
@@ -368,7 +368,7 @@ const LandingPage = () => {
       <section id="features" className="modern-features section-reveal">
         <div className="features-container">
           <div className="features-intro content-block-reveal">
-            <h2 className="features-title">Why Choose SkyCrate?</h2>
+            <h2 className="features-title">Why Choose Vaultify?</h2>
             <p className="features-subtitle">
               Next-generation cloud storage with intelligent optimization and enterprise-grade security
             </p>
@@ -478,7 +478,7 @@ const LandingPage = () => {
             <div className="footer-brand">
               <div className="footer-logo">
                 <FiCloud className="footer-logo-icon" />
-                <span className="footer-logo-text">SkyCrate</span>
+                <span className="footer-logo-text">Vaultify</span>
               </div>
               <p className="footer-tagline">Smart cloud storage that saves money</p>
             </div>
@@ -509,16 +509,16 @@ const LandingPage = () => {
 
           <div className="footer-bottom">
             <div className="footer-legal">
-              <span>&copy; 2024 SkyCrate. All rights reserved.</span>
+              <span>&copy; 2024 Vaultify. All rights reserved.</span>
             </div>
             <div className="footer-social">
-              <a href="https://twitter.com/skycrate" target="_blank" rel="noopener noreferrer" className="social-link">
+              <a href="https://twitter.com/vaultify" target="_blank" rel="noopener noreferrer" className="social-link">
                 Twitter
               </a>
-              <a href="https://linkedin.com/company/skycrate" target="_blank" rel="noopener noreferrer" className="social-link">
+              <a href="https://linkedin.com/company/vaultify" target="_blank" rel="noopener noreferrer" className="social-link">
                 LinkedIn
               </a>
-              <a href="https://github.com/skycrate" target="_blank" rel="noopener noreferrer" className="social-link">
+              <a href="https://github.com/vaultify" target="_blank" rel="noopener noreferrer" className="social-link">
                 GitHub
               </a>
             </div>

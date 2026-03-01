@@ -1,10 +1,10 @@
 # AWS S3 Storage Classes Integration
 
-This document explains how SkyCrate automatically optimizes AWS S3 storage costs by using different storage classes based on file characteristics.
+This document explains how Vaultify automatically optimizes AWS S3 storage costs by using different storage classes based on file characteristics.
 
 ## 🎯 What This Does
 
-When users upload files, SkyCrate automatically selects the most cost-effective AWS S3 storage class based on:
+When users upload files, Vaultify automatically selects the most cost-effective AWS S3 storage class based on:
 - **File type** (images, videos, archives, etc.)
 - **File size** (large files get different treatment)
 - **Expected access patterns** (frequent vs infrequent access)
@@ -39,9 +39,9 @@ When users upload files, SkyCrate automatically selects the most cost-effective 
 - **Monitoring Fees**: Small monthly monitoring fee ($0.0025/1,000 objects) for the automation
 - **Cost Effective**: Automatically saves money for files with unpredictable access patterns
 
-### SkyCrate Integration
+### Vaultify Integration
 - **30% Service Margin**: We add value through simplified interface and support
-- **SkyCrate Price**: $0.01625/GB/month ($0.0125 base + 30% margin)
+- **Vaultify Price**: $0.01625/GB/month ($0.0125 base + 30% margin)
 - **Automatic Selection**: Recommended for users who want "set it and forget it" storage
 
 ## 🤖 Automatic Optimization Logic
@@ -226,4 +226,4 @@ Files are assigned optimal storage class at upload time. For existing files, con
 
 ---
 
-**🎉 Result**: Your SkyCrate application now automatically optimizes AWS S3 costs, potentially saving 40-80% on storage expenses while maintaining performance for frequently accessed files!
+**🎉 Result**: Your Vaultify application now automatically optimizes AWS S3 costs, potentially saving 40-80% on storage expenses while maintaining performance for frequently accessed files!
