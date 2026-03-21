@@ -29,7 +29,8 @@ import {
   FiMoon,
   FiDollarSign,
   FiFile,
-  FiServer
+  FiServer,
+  FiTag
 } from 'react-icons/fi';
 import { useTheme } from '../contexts/ThemeContext';
 import { useSharedFiles } from '../contexts/SharedFilesContext';
@@ -41,6 +42,7 @@ import DashboardBilling from './DashboardBilling';
 import ComputeManager from './ComputeManager';
 import VersionHistory from './VersionHistory';
 import NotificationTest from './NotificationTest';
+import AITagsView from './AITagsView';
 import './Dashboard.css';
 import '../styles/animations.css';
 
@@ -709,6 +711,13 @@ const Dashboard = () => {
             <FiServer />
             <span>Compute</span>
           </div>
+          <div
+            className={`nav-item ${currentView === 'aitags' ? 'active' : ''}`}
+            onClick={() => setCurrentView('aitags')}
+          >
+            <FiTag />
+            <span>AI Tags</span>
+          </div>
           <div className="nav-item">
             <FiSettings />
             <span>Settings</span>
@@ -808,6 +817,8 @@ const Dashboard = () => {
             </div>
           ) : currentView === 'compute' ? (
             <ComputeManager />
+          ) : currentView === 'aitags' ? (
+            <AITagsView />
           ) : currentView === 'shared' ? (
             <div className="shared-files-view">
               <div className="files-header">

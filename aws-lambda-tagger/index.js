@@ -17,7 +17,10 @@ import { RekognitionClient, DetectLabelsCommand } from '@aws-sdk/client-rekognit
 import axios from 'axios';
 
 // ── Clients & Config ────────────────────────────────────────
-const rekognition = new RekognitionClient({});
+// Rekognition is NOT available in ap-south-2 (Hyderabad),
+// so we use ap-south-1 (Mumbai) which is the nearest supported region.
+const REKOGNITION_REGION = process.env.REKOGNITION_REGION || 'ap-south-1';
+const rekognition = new RekognitionClient({ region: REKOGNITION_REGION });
 
 const API_URL = process.env.VAULTIFY_API_URL || 'http://localhost:5000';
 const API_KEY = process.env.VAULTIFY_API_KEY || '';

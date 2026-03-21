@@ -1,6 +1,7 @@
 # Dependencies
 node_modules/
-npm-debug.log*
+aws-lambda-tagger/node_modules/
+*.zip
 yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*

@@ -58,8 +58,8 @@ Go to **Configuration → Environment variables** and add:
 
 | Variable | Value | Example |
 |----------|-------|---------|
-| `VAULTIFY_API_URL` | Your Vaultify API base URL | `https://api.vaultify.app` |
-| `VAULTIFY_API_KEY` | A valid JWT or API key | `eyJhbGci...` |
+| `VAULTIFY_API_URL` | Your Vaultify API base URL | `https://xxxx.ngrok-free.app` |
+| `VAULTIFY_API_KEY` | Must match `VAULTIFY_API_KEY` in `.env` | `your_random_key` |
 | `REKOGNITION_MAX` | Maximum labels to return | `10` |
 | `REKOGNITION_MIN_CONF` | Minimum confidence % | `70` |
 
@@ -161,3 +161,20 @@ Go to **CloudWatch → Log groups → /aws/lambda/vaultify-ai-tagger** to see:
 | API returns 401/403 | Check `VAULTIFY_API_KEY` is a valid token |
 | Timeout errors | Increase Lambda timeout to 60s |
 | Function not triggering | Verify S3 event notification is enabled and prefix matches |
+| Rekognition ENOTFOUND | Rekognition may not be available in your region — set `REKOGNITION_REGION=ap-south-1` in Lambda env vars |
+
+---
+
+## Local Development with ngrok
+
+For local testing, use **ngrok** to expose your backend to Lambda:
+
+```bash
+ngrok http 5000
+```
+
+Copy the `https://xxxx.ngrok-free.app` URL and set it as `VAULTIFY_API_URL` in Lambda env vars.
+
+> ⚠️ The ngrok URL changes each time you restart (free plan). Update the Lambda env var accordingly.
+
+Monitor incoming requests at `http://127.0.0.1:4040`.

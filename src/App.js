@@ -12,11 +12,10 @@ import NotificationContainer from './components/NotificationContainer';
 import './App.css';
 
 
-// Protected Route Component — TEMPORARILY BYPASSED for UI preview
+// Protected Route Component
 const ProtectedRoute = ({ children }) => {
-  // const token = localStorage.getItem('token');
-  // return token ? children : <Navigate to="/login" />;
-  return children;
+  const token = localStorage.getItem('token');
+  return token ? children : <Navigate to="/login" />;
 };
 
 // Public Route Component (redirect if already logged in)

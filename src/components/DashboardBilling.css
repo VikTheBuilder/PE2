@@ -5,8 +5,42 @@
   gap: var(--space-8);
 }
 
+/* Page Title */
+.billing-page-title {
+  font-size: var(--text-2xl);
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+/* Hero Card */
+.billing-hero-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-6) var(--space-8);
+  background: linear-gradient(135deg, rgba(19, 22, 32, 0.85), rgba(59, 130, 246, 0.08));
+  border: 1px solid rgba(45, 212, 191, 0.10);
+  border-radius: var(--radius-xl);
+  backdrop-filter: blur(16px);
+}
+
+.billing-hero-left {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.billing-hero-label {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+
 /* Loading and Error States */
-.loading-state, .error-state {
+.loading-state,
+.error-state {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -26,8 +60,13 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .error-state p {
@@ -107,13 +146,13 @@
   background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(12px);
   border-radius: var(--radius-xl);
-  box-shadow: 
+  box-shadow:
     0 4px 6px -1px rgba(0, 0, 0, 0.05),
     0 2px 4px -1px rgba(0, 0, 0, 0.03);
 }
 
 [data-theme="dark"] .billing-header {
-  background: rgba(17, 25, 40, 0.5);
+  background: rgba(15, 23, 42, 0.5);
 }
 
 .current-plan-info h2 {
@@ -148,13 +187,13 @@
   background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(12px);
   border-radius: var(--radius-xl);
-  box-shadow: 
+  box-shadow:
     0 4px 6px -1px rgba(0, 0, 0, 0.05),
     0 2px 4px -1px rgba(0, 0, 0, 0.03);
 }
 
 [data-theme="dark"] .cost-summary {
-  background: rgba(17, 25, 40, 0.5);
+  background: rgba(15, 23, 42, 0.5);
 }
 
 .cost-summary h3 {
@@ -184,8 +223,8 @@
 
 .cost-card.primary:hover {
   transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 12px 40px rgba(0, 255, 136, 0.2);
-  border: 2px solid rgba(0, 255, 136, 0.4);
+  box-shadow: 0 12px 40px rgba(45, 212, 191, 0.2);
+  border: 2px solid rgba(45, 212, 191, 0.4);
 }
 
 [data-theme="dark"] .cost-card {
@@ -217,6 +256,17 @@
   margin-bottom: var(--space-2);
 }
 
+/* Hero billing amount — large neon green */
+.billing-hero-amount {
+  font-size: 3.5rem;
+  font-weight: 800;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  color: #2DD4BF;
+  text-shadow: 0 0 30px rgba(45, 212, 191, 0.3), 0 0 60px rgba(45, 212, 191, 0.1);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
 .cost-detail {
   color: var(--text-secondary);
   font-size: var(--text-sm);
@@ -244,7 +294,7 @@
   max-height: 80vh;
   overflow-y: auto;
   padding: var(--space-6);
-  box-shadow: 
+  box-shadow:
     0 25px 50px -12px rgba(0, 0, 0, 0.25);
 }
 
@@ -277,8 +327,8 @@
   color: var(--text-primary);
   background: var(--bg-secondary);
   transform: scale(1.1) translateY(-1px);
-  border: 1px solid rgba(0, 255, 136, 0.3);
-  box-shadow: 0 4px 12px rgba(0, 255, 136, 0.2);
+  border: 1px solid rgba(45, 212, 191, 0.3);
+  box-shadow: 0 4px 12px rgba(45, 212, 191, 0.2);
 }
 
 .pricing-sections {
@@ -339,13 +389,13 @@
   background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(12px);
   border-radius: var(--radius-xl);
-  box-shadow: 
+  box-shadow:
     0 4px 6px -1px rgba(0, 0, 0, 0.05),
     0 2px 4px -1px rgba(0, 0, 0, 0.03);
 }
 
 [data-theme="dark"] .usage-breakdown {
-  background: rgba(17, 25, 40, 0.5);
+  background: rgba(15, 23, 42, 0.5);
 }
 
 .usage-breakdown h3 {
@@ -364,8 +414,8 @@
 
 .usage-category:hover {
   transform: translateY(-2px) scale(1.01);
-  box-shadow: 0 8px 25px rgba(0, 255, 136, 0.2);
-  border-left: 4px solid rgba(0, 255, 136, 0.6);
+  box-shadow: 0 8px 25px rgba(45, 212, 191, 0.2);
+  border-left: 4px solid rgba(45, 212, 191, 0.6);
 }
 
 [data-theme="dark"] .usage-category {
@@ -416,8 +466,8 @@
 
 .usage-item:hover {
   transform: translateY(-2px) scale(1.01);
-  box-shadow: 0 8px 25px rgba(0, 255, 136, 0.2);
-  border: 1px solid rgba(0, 255, 136, 0.3);
+  box-shadow: 0 8px 25px rgba(45, 212, 191, 0.2);
+  border: 1px solid rgba(45, 212, 191, 0.3);
 }
 
 [data-theme="dark"] .usage-item {
@@ -426,8 +476,8 @@
 
 [data-theme="dark"] .usage-item:hover {
   transform: translateY(-2px) scale(1.01);
-  box-shadow: 0 8px 25px rgba(0, 255, 136, 0.2);
-  border: 1px solid rgba(0, 255, 136, 0.3);
+  box-shadow: 0 8px 25px rgba(45, 212, 191, 0.2);
+  border: 1px solid rgba(45, 212, 191, 0.3);
 }
 
 .usage-details {
@@ -479,13 +529,13 @@
   background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(12px);
   border-radius: var(--radius-xl);
-  box-shadow: 
+  box-shadow:
     0 4px 6px -1px rgba(0, 0, 0, 0.05),
     0 2px 4px -1px rgba(0, 0, 0, 0.03);
 }
 
 [data-theme="dark"] .billing-history {
-  background: rgba(17, 25, 40, 0.5);
+  background: rgba(15, 23, 42, 0.5);
 }
 
 .history-table {
@@ -555,15 +605,15 @@
   color: var(--primary);
   background: rgba(0, 0, 0, 0.05);
   transform: scale(1.1) translateY(-1px);
-  border: 1px solid rgba(0, 255, 136, 0.3);
-  box-shadow: 0 4px 12px rgba(0, 255, 136, 0.2);
+  border: 1px solid rgba(45, 212, 191, 0.3);
+  box-shadow: 0 4px 12px rgba(45, 212, 191, 0.2);
 }
 
 [data-theme="dark"] .btn-icon:hover {
   background: rgba(255, 255, 255, 0.1);
   transform: scale(1.1) translateY(-1px);
-  border: 1px solid rgba(0, 255, 136, 0.3);
-  box-shadow: 0 4px 12px rgba(0, 255, 136, 0.2);
+  border: 1px solid rgba(45, 212, 191, 0.3);
+  box-shadow: 0 4px 12px rgba(45, 212, 191, 0.2);
 }
 
 /* Cost Optimization Tips */
@@ -572,13 +622,13 @@
   background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(12px);
   border-radius: var(--radius-xl);
-  box-shadow: 
+  box-shadow:
     0 4px 6px -1px rgba(0, 0, 0, 0.05),
     0 2px 4px -1px rgba(0, 0, 0, 0.03);
 }
 
 [data-theme="dark"] .cost-tips {
-  background: rgba(17, 25, 40, 0.5);
+  background: rgba(15, 23, 42, 0.5);
 }
 
 .cost-tips h3 {
@@ -606,8 +656,8 @@
 
 .tip-card:hover {
   transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 12px 40px rgba(0, 255, 136, 0.2);
-  border: 1px solid rgba(0, 255, 136, 0.3);
+  box-shadow: 0 12px 40px rgba(45, 212, 191, 0.2);
+  border: 1px solid rgba(45, 212, 191, 0.3);
 }
 
 .tip-card svg {
@@ -675,8 +725,8 @@
     gap: var(--space-2);
   }
 
-  .table-header > div:nth-child(n+4):nth-child(-n+6),
-  .table-row > div:nth-child(n+4):nth-child(-n+6) {
+  .table-header>div:nth-child(n+4):nth-child(-n+6),
+  .table-row>div:nth-child(n+4):nth-child(-n+6) {
     display: none;
   }
 
@@ -701,11 +751,12 @@
     grid-template-columns: 1fr 1fr;
   }
 
-  .table-header > div:nth-child(n+3),
-  .table-row > div:nth-child(n+3) {
+  .table-header>div:nth-child(n+3),
+  .table-row>div:nth-child(n+3) {
     display: none;
   }
 }
+
 /* Button Styles */
 .btn {
   display: inline-flex;
@@ -755,13 +806,13 @@
   background: var(--primary);
   color: white;
   border: 1px solid var(--primary);
-  box-shadow: 0 4px 12px rgba(0, 255, 136, 0.3);
+  box-shadow: 0 4px 12px rgba(45, 212, 191, 0.3);
 }
 
 .btn-primary:hover {
   background: var(--primary);
   border-color: var(--primary);
-  box-shadow: 0 8px 25px rgba(0, 255, 136, 0.4);
+  box-shadow: 0 8px 25px rgba(45, 212, 191, 0.4);
   opacity: 0.9;
 }
 
@@ -774,19 +825,19 @@
 
 [data-theme="dark"] .btn-secondary {
   background: rgba(0, 0, 0, 0.8);
-  border: 1px solid rgba(0, 255, 136, 0.2);
+  border: 1px solid rgba(45, 212, 191, 0.2);
   color: var(--text-primary);
 }
 
 .btn-secondary:hover {
   background: rgba(255, 255, 255, 0.95);
-  border-color: rgba(0, 255, 136, 0.5);
-  box-shadow: 0 8px 25px rgba(0, 255, 136, 0.2);
+  border-color: rgba(45, 212, 191, 0.5);
+  box-shadow: 0 8px 25px rgba(45, 212, 191, 0.2);
 }
 
 [data-theme="dark"] .btn-secondary:hover {
   background: rgba(0, 0, 0, 0.95);
-  border-color: rgba(0, 255, 136, 0.5);
+  border-color: rgba(45, 212, 191, 0.5);
 }
 
 /* Outline Button */
@@ -800,7 +851,7 @@
   background: var(--primary);
   color: white;
   border-color: var(--primary);
-  box-shadow: 0 8px 25px rgba(0, 255, 136, 0.3);
+  box-shadow: 0 8px 25px rgba(45, 212, 191, 0.3);
 }
 
 /* Button Sizes */

@@ -39,7 +39,7 @@ const launchInstance = async (userId, instanceName) => {
 
     const command = new RunInstancesCommand({
         ImageId: config.EC2_DEFAULT_AMI,
-        InstanceType: 't2.micro',
+        InstanceType: 't3.micro',
         MinCount: 1,
         MaxCount: 1,
         TagSpecifications: [

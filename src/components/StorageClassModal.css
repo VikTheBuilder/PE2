@@ -167,10 +167,10 @@
 }
 
 .storage-size-option:hover {
-  border-color: rgba(0, 255, 136, 0.4);
+  border-color: rgba(45, 212, 191, 0.4);
   background: var(--bg-secondary);
   transform: translateY(-2px) scale(1.01);
-  box-shadow: 0 8px 25px rgba(0, 255, 136, 0.2);
+  box-shadow: 0 8px 25px rgba(45, 212, 191, 0.2);
 }
 
 .storage-size-option.selected {
@@ -318,10 +318,10 @@
 }
 
 .storage-class-option:hover {
-  border-color: rgba(0, 255, 136, 0.4);
+  border-color: rgba(45, 212, 191, 0.4);
   background: var(--bg-secondary);
   transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 12px 40px rgba(0, 255, 136, 0.2);
+  box-shadow: 0 12px 40px rgba(45, 212, 191, 0.2);
 }
 
 .storage-class-option.selected {
@@ -572,13 +572,13 @@
   background: var(--primary);
   color: white;
   border: 1px solid var(--primary);
-  box-shadow: 0 4px 12px rgba(0, 255, 136, 0.3);
+  box-shadow: 0 4px 12px rgba(45, 212, 191, 0.3);
 }
 
 .btn-primary:hover {
   background: var(--primary);
   border-color: var(--primary);
-  box-shadow: 0 8px 25px rgba(0, 255, 136, 0.4);
+  box-shadow: 0 8px 25px rgba(45, 212, 191, 0.4);
   opacity: 0.9;
 }
 
@@ -591,19 +591,19 @@
 
 [data-theme="dark"] .btn-secondary {
   background: rgba(0, 0, 0, 0.8);
-  border: 1px solid rgba(0, 255, 136, 0.2);
+  border: 1px solid rgba(45, 212, 191, 0.2);
   color: var(--text-primary);
 }
 
 .btn-secondary:hover {
   background: rgba(255, 255, 255, 0.95);
-  border-color: rgba(0, 255, 136, 0.5);
-  box-shadow: 0 8px 25px rgba(0, 255, 136, 0.2);
+  border-color: rgba(45, 212, 191, 0.5);
+  box-shadow: 0 8px 25px rgba(45, 212, 191, 0.2);
 }
 
 [data-theme="dark"] .btn-secondary:hover {
   background: rgba(0, 0, 0, 0.95);
-  border-color: rgba(0, 255, 136, 0.5);
+  border-color: rgba(45, 212, 191, 0.5);
 }
 
 /* Button States */

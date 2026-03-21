@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { 
-  FiDownload, 
-  FiBox, 
+import {
+  FiDownload,
+  FiBox,
   FiActivity,
   FiUpload,
   FiGlobe,
@@ -15,11 +15,11 @@ import './DashboardBilling.css';
 
 // Import safe utilities
 import { formatStorageSize, formatCurrency, formatNumber } from '../utils/safeFormatters';
-import { 
-  validateUsageResponse, 
-  validateCurrentResponse, 
+import {
+  validateUsageResponse,
+  validateCurrentResponse,
   validateHistoryResponse,
-  DEFAULT_USAGE_METRICS 
+  DEFAULT_USAGE_METRICS
 } from '../utils/dataValidators';
 import { errorRecoveryManager, executeWithRetry } from '../utils/errorRecovery';
 import { billingStateManager } from '../utils/stateManager';
@@ -38,10 +38,10 @@ class BillingErrorBoundary extends React.Component {
 
   componentDidCatch(error, errorInfo) {
     console.error('Billing component error:', error, errorInfo);
-    
+
     // Log error with recovery manager
     const recoveryAction = errorRecoveryManager.handleError(error, 'billing-component');
-    
+
     this.setState({
       error: error,
       errorInfo: errorInfo,
@@ -57,8 +57,8 @@ class BillingErrorBoundary extends React.Component {
             <h3>Something went wrong with the billing dashboard</h3>
             <p>{this.state.recoveryAction?.userMessage || 'An unexpected error occurred.'}</p>
             <div className="error-actions">
-              <button 
-                className="btn btn-primary" 
+              <button
+                className="btn btn-primary"
                 onClick={() => {
                   this.setState({ hasError: false, error: null, errorInfo: null });
                   window.location.reload();
@@ -102,18 +102,18 @@ const DashboardBilling = () => {
     try {
       const validatedData = validateUsageResponse(data);
       setUsageMetrics(validatedData);
-      
+
       // Store as last valid data for recovery
       setLastValidData(prev => ({
         ...prev,
         usageMetrics: validatedData
       }));
-      
+
       return validatedData;
     } catch (validationError) {
       console.error('Usage data validation failed:', validationError);
       const recoveryAction = errorRecoveryManager.handleError(validationError, 'usage-metrics');
-      
+
       // Use fallback data if validation fails
       const fallbackData = recoveryAction.fallbackData;
       setUsageMetrics(fallbackData);
@@ -126,18 +126,18 @@ const DashboardBilling = () => {
     try {
       const validatedData = validateCurrentResponse(data);
       setCurrentCosts(validatedData);
-      
+
       // Store as last valid data for recovery
       setLastValidData(prev => ({
         ...prev,
         currentCosts: validatedData
       }));
-      
+
       return validatedData;
     } catch (validationError) {
       console.error('Current costs validation failed:', validationError);
       const recoveryAction = errorRecoveryManager.handleError(validationError, 'current-billing');
-      
+
       // Use fallback data if validation fails
       const fallbackData = recoveryAction.fallbackData;
       setCurrentCosts(fallbackData);
@@ -150,18 +150,18 @@ const DashboardBilling = () => {
     try {
       const validatedData = validateHistoryResponse(data);
       setBillingHistory(validatedData);
-      
+
       // Store as last valid data for recovery
       setLastValidData(prev => ({
         ...prev,
         billingHistory: validatedData
       }));
-      
+
       return validatedData;
     } catch (validationError) {
       console.error('Billing history validation failed:', validationError);
       const recoveryAction = errorRecoveryManager.handleError(validationError, 'billing-history');
-      
+
       // Use fallback data if validation fails
       const fallbackData = recoveryAction.fallbackData;
       setBillingHistory(fallbackData);
@@ -189,12 +189,12 @@ const DashboardBilling = () => {
     // If state is invalid, attempt recovery
     if (!validation.isValid) {
       console.warn('Component state validation failed:', validation.errors);
-      
+
       const recovery = billingStateManager.recoverFromCorruption(currentState, 'dashboard-billing');
-      
+
       if (recovery.recoveredState) {
         console.log('State recovery actions:', recovery.actionsToken);
-        
+
         // Apply recovered state
         if (recovery.recoveredState.usageMetrics !== usageMetrics) {
           setUsageMetrics(recovery.recoveredState.usageMetrics);
@@ -211,10 +211,10 @@ const DashboardBilling = () => {
         if (recovery.recoveredState.error !== error) {
           setError(recovery.recoveredState.error);
         }
-        
+
         // Update validation state
-        setStateValidation({ 
-          isValid: true, 
+        setStateValidation({
+          isValid: true,
           warnings: [`State recovered: ${recovery.actionsToken.join(', ')}`],
           recoveryUsed: true
         });
@@ -244,7 +244,7 @@ const DashboardBilling = () => {
   // Persist last known good state
   const persistCurrentState = useCallback(() => {
     const validation = validateComponentState();
-    
+
     if (validation.isValid && usageMetrics && !loading && !error) {
       const stateToStore = {
         usageMetrics,
@@ -252,7 +252,7 @@ const DashboardBilling = () => {
         billingHistory,
         pricingStructure
       };
-      
+
       billingStateManager.persistLastGoodState(stateToStore);
       console.log('Current state persisted as last good state');
     }
@@ -261,15 +261,15 @@ const DashboardBilling = () => {
   // Attempt to restore from last good state
   const restoreFromLastGoodState = useCallback(() => {
     const lastGoodState = billingStateManager.getLastGoodState();
-    
+
     if (lastGoodState) {
       console.log('Restoring from last good state...');
-      
+
       setUsageMetrics(lastGoodState.usageMetrics);
       setCurrentCosts(lastGoodState.currentCosts);
       setBillingHistory(lastGoodState.billingHistory);
       setPricingStructure(lastGoodState.pricingStructure);
-      
+
       setError({
         message: 'Showing last known data. Some information may be outdated.',
         type: 'stale-data',
@@ -277,10 +277,10 @@ const DashboardBilling = () => {
         canRetry: true,
         partialData: true
       });
-      
+
       return true;
     }
-    
+
     return false;
   }, []);
 
@@ -308,7 +308,7 @@ const DashboardBilling = () => {
       setError(null);
 
       console.log('🔍 Fetching billing data with enhanced error handling...');
-      
+
       const results = {
         usage: null,
         current: null,
@@ -322,7 +322,7 @@ const DashboardBilling = () => {
         console.log('📊 Usage data received:', usageData);
         results.usage = validateUsageResponse(usageData);
         setValidatedUsageMetrics(results.usage);
-        
+
         // Set pricing structure from validated data
         const validatedPricing = results.usage?.pricing || {};
         setPricingStructure(validatedPricing);
@@ -336,7 +336,7 @@ const DashboardBilling = () => {
           error: usageError.message,
           recoveryAction
         });
-        
+
         // Set fallback pricing structure
         setPricingStructure({
           storage: {
@@ -401,17 +401,17 @@ const DashboardBilling = () => {
       // Handle any errors that occurred during fetching
       if (results.errors && results.errors.length > 0) {
         console.warn('Some billing data could not be loaded:', results.errors);
-        
+
         // Set error state if critical data is missing
-        const criticalErrors = results.errors.filter(err => 
+        const criticalErrors = results.errors.filter(err =>
           err.type === 'usage' && !results.usage
         );
-        
+
         if (criticalErrors.length > 0) {
           const primaryError = criticalErrors[0];
           const enhancedError = createEnhancedError(
-            new Error(primaryError.error), 
-            'critical-data-fetch', 
+            new Error(primaryError.error),
+            'critical-data-fetch',
             true
           );
           setError(enhancedError);
@@ -423,14 +423,14 @@ const DashboardBilling = () => {
 
     } catch (error) {
       console.error('Error in enhanced billing data fetch:', error);
-      
+
       // Create enhanced error state
       const enhancedError = createEnhancedError(error, 'billing-data-fetch');
       setError(enhancedError);
 
       // Try to restore from last good state first
       const restored = restoreFromLastGoodState();
-      
+
       if (!restored) {
         // Try to restore from last valid data if available
         if (lastValidData && Object.keys(lastValidData).length > 0) {
@@ -473,7 +473,7 @@ const DashboardBilling = () => {
     const initializeData = async () => {
       // Try to restore from last good state first
       const restored = restoreFromLastGoodState();
-      
+
       if (restored) {
         // Still fetch fresh data in background
         setTimeout(() => {
@@ -494,7 +494,7 @@ const DashboardBilling = () => {
       if (!dateString) return 'Unknown date';
       const date = new Date(dateString);
       if (isNaN(date.getTime())) return 'Invalid date';
-      
+
       return date.toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'long',
@@ -510,18 +510,18 @@ const DashboardBilling = () => {
   const calculateTotalUsage = () => {
     try {
       if (!usageMetrics || typeof usageMetrics !== 'object') return 0;
-      
+
       const storageCost = usageMetrics.storage?.totalCost || 0;
       const requestsCost = usageMetrics.requests?.totalCost || 0;
       const transferCost = usageMetrics.transfer?.totalCost || 0;
       const retrievalCost = usageMetrics.retrieval?.totalCost || 0;
-      
+
       // Validate all costs are numbers
       const costs = [storageCost, requestsCost, transferCost, retrievalCost];
-      const validCosts = costs.filter(cost => 
+      const validCosts = costs.filter(cost =>
         typeof cost === 'number' && !isNaN(cost) && isFinite(cost)
       );
-      
+
       return validCosts.reduce((total, cost) => total + cost, 0);
     } catch (error) {
       console.error('Error calculating total usage:', error);
@@ -558,7 +558,7 @@ const DashboardBilling = () => {
         <div className="error-state">
           <h3>Unable to Load Billing Data</h3>
           <p>{error.message || 'An unexpected error occurred while loading billing data.'}</p>
-          
+
           {error.canRetry && (
             <div className="error-actions">
               <button className="btn btn-primary" onClick={retryFetch}>
@@ -569,7 +569,7 @@ const DashboardBilling = () => {
               </p>
             </div>
           )}
-          
+
           {!error.canRetry && error.recoverable && (
             <div className="error-actions">
               <button className="btn btn-outline" onClick={() => window.location.reload()}>
@@ -577,7 +577,7 @@ const DashboardBilling = () => {
               </button>
             </div>
           )}
-          
+
           {lastValidData && Object.keys(lastValidData).length > 0 && (
             <div className="stale-data-notice">
               <p>Showing last known data. Some information may be outdated.</p>
@@ -641,6 +641,25 @@ const DashboardBilling = () => {
         </div>
       )}
 
+      {/* Page Title */}
+      <h1 className="billing-page-title">Billing &amp; Usage Analytics</h1>
+
+      {/* Hero Card: Total Current Month Usage */}
+      <div className="billing-hero-card">
+        <div className="billing-hero-left">
+          <span className="billing-hero-label">Total Current Month Usage</span>
+          <div className="billing-hero-amount">
+            {formatCurrency(safeGet(currentCosts, 'monthToDate', 0))}
+          </div>
+        </div>
+        <button
+          className="btn btn-primary"
+          onClick={() => setShowPricing(!showPricing)}
+        >
+          <FiInfo /> View Pricing
+        </button>
+      </div>
+
       {/* Billing Overview Header */}
       <div className="billing-header">
         <div className="current-plan-info">
@@ -676,12 +695,12 @@ const DashboardBilling = () => {
                 <FiTrendingUp />
                 <span>Month to Date</span>
               </div>
-              <div className="cost-amount">
+              <div className="cost-amount billing-hero-amount">
                 {formatCurrency(safeGet(currentCosts, 'monthToDate', 0))}
               </div>
               <div className="cost-detail">As of today</div>
             </div>
-            
+
             <div className="cost-card">
               <div className="cost-header">
                 <FiClock />
@@ -691,11 +710,11 @@ const DashboardBilling = () => {
                 {formatCurrency(safeGet(currentCosts, 'projectedMonthEnd', 0))}
               </div>
               <div className="cost-detail">
-                {safeGet(currentCosts, 'trend') === 'up' ? '↗️' : safeGet(currentCosts, 'trend') === 'down' ? '↘️' : '➡️'} 
+                {safeGet(currentCosts, 'trend') === 'up' ? '↗️' : safeGet(currentCosts, 'trend') === 'down' ? '↘️' : '➡️'}
                 vs last month
               </div>
             </div>
-            
+
             <div className="cost-card">
               <div className="cost-header">
                 <FiActivity />
@@ -726,7 +745,7 @@ const DashboardBilling = () => {
                 onClick={() => setShowPricing(false)}
               >×</button>
             </div>
-            
+
             <div className="pricing-sections">
               <div className="pricing-section">
                 <h4><FiBox /> Storage Costs (per GB/month)</h4>
@@ -784,7 +803,7 @@ const DashboardBilling = () => {
       {usageMetrics && (
         <div className="usage-breakdown">
           <h3>Current Month Usage</h3>
-          
+
           {/* Storage Usage */}
           <div className="usage-category">
             <div className="category-header">
@@ -806,12 +825,12 @@ const DashboardBilling = () => {
                   'GLACIER': 'flexible_archive',
                   'DEEP_ARCHIVE': 'deep_archive'
                 };
-                
+
                 const pricingKey = storageClassMap[key] || key.toLowerCase();
                 const storageInfo = safeGet(pricingStructure, `storage.${pricingKey}`, {
                   name: key.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())
                 });
-                
+
                 return (
                   <div key={key} className="usage-item">
                     <div className="usage-details">
