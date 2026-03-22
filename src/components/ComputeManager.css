@@ -1004,6 +1004,82 @@
     text-transform: uppercase;
 }
 
+/* ─── SSH Connection Info Card ───────────────────── */
+.ssh-info-card {
+    background: var(--glass-bg, rgba(15, 23, 42, 0.6));
+    border: 1px solid rgba(45, 212, 191, 0.2);
+    border-radius: var(--radius-xl, 16px);
+    padding: var(--space-5);
+    margin-top: var(--space-4);
+}
+
+.ssh-info-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-4);
+}
+
+.ssh-info-header h2 {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-base);
+    font-weight: 600;
+    color: #2DD4BF;
+    margin: 0;
+}
+
+.ssh-instances-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.ssh-instance-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3);
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: var(--radius-lg, 12px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.ssh-name {
+    font-weight: 500;
+    color: var(--text-secondary);
+    min-width: 100px;
+    font-size: var(--text-sm);
+}
+
+.ssh-command {
+    flex: 1;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 0.8rem;
+    color: #2DD4BF;
+    background: rgba(45, 212, 191, 0.08);
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-md, 8px);
+    white-space: nowrap;
+    overflow-x: auto;
+}
+
+.ssh-note {
+    margin-top: var(--space-3);
+    font-size: var(--text-xs);
+    color: var(--text-tertiary);
+}
+
+.ssh-note code {
+    color: #f59e0b;
+    background: rgba(245, 158, 11, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+}
+
 /* ─── Responsive Two-Col ─────────────────────────── */
 @media (max-width: 900px) {
     .compute-two-col {

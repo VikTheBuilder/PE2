@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import {
   FiServer, FiPlay, FiSquare, FiTrash2, FiPlus, FiCpu,
-  FiHardDrive, FiGlobe, FiClock, FiRefreshCw, FiAlertCircle
+  FiHardDrive, FiGlobe, FiClock, FiRefreshCw, FiAlertCircle,
+  FiKey, FiCopy, FiTerminal
 } from 'react-icons/fi';
 import { computeAPI } from '../services/api';
 import './ComputeManager.css';
@@ -14,6 +15,8 @@ function ComputeManager() {
   const [launching, setLaunching] = useState(false);
   const [terminatingId, setTerminatingId] = useState(null);
   const [error, setError] = useState('');
+  const [health, setHealth] = useState({ healthPercent: 100, cpuLoad: 0, memoryUsage: '0 MB', statusLabel: 'LOADING' });
+  const [systemLogs, setSystemLogs] = useState([]);
 
   // ── Fetch instances ──────────────────────────────
   const fetchInstances = useCallback(async (isRefresh = false) => {
@@ -33,9 +36,26 @@ function ComputeManager() {
     }
   }, []);
 
+  // ── Fetch health & logs ─────────────────────────
+  const fetchHealth = useCallback(async () => {
+    try {
+      const data = await computeAPI.fetchHealth();
+      setHealth(data);
+    } catch (err) { /* silent */ }
+  }, []);
+
+  const fetchLogs = useCallback(async () => {
+    try {
+      const data = await computeAPI.fetchLogs();
+      setSystemLogs(data.events || []);
+    } catch (err) { /* silent */ }
+  }, []);
+
   useEffect(() => {
     fetchInstances();
-  }, [fetchInstances]);
+    fetchHealth();
+    fetchLogs();
+  }, [fetchInstances, fetchHealth, fetchLogs]);
 
   // ── Launch ───────────────────────────────────────
   const handleLaunch = async () => {
@@ -47,12 +67,32 @@ function ComputeManager() {
       setError('');
       await computeAPI.launchInstance(name.trim());
       await fetchInstances(true);
+      fetchHealth();
+      fetchLogs();
     } catch (err) {
       const msg = err.response?.data?.error || 'Failed to launch instance';
       setError(msg);
     } finally {
       setLaunching(false);
     }
+  };
+
+  // ── Download SSH Key ────────────────────────────
+  const handleDownloadKey = async () => {
+    try {
+      setError('');
+      await computeAPI.downloadKey();
+    } catch (err) {
+      const msg = err.response?.status === 404
+        ? 'SSH key not found. Launch an instance first to generate the key pair.'
+        : 'Failed to download SSH key';
+      setError(msg);
+    }
+  };
+
+  // ── Copy to clipboard ──────────────────────────
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text);
   };
 
   // ── Terminate ────────────────────────────────────
@@ -65,6 +105,8 @@ function ComputeManager() {
       await computeAPI.terminateInstance(instanceId);
       setSelectedInstances((prev) => prev.filter((x) => x !== instanceId));
       await fetchInstances(true);
+      fetchHealth();
+      fetchLogs();
     } catch (err) {
       const status = err.response?.status;
       const msg =
@@ -145,16 +187,7 @@ function ComputeManager() {
     );
   }
 
-  // ── Mock system logs ─────────────────────────────
-  const systemLogs = [
-    { level: 'INFO', msg: `Instance i-${Math.random().toString(36).substr(2, 12)} started successfully`, time: new Date().toISOString().replace('T', ' ').substr(0, 19) },
-    { level: 'WARN', msg: `High CPU usage on instance i-${Math.random().toString(36).substr(2, 12)} (92%)`, time: new Date(Date.now() - 60000).toISOString().replace('T', ' ').substr(0, 19) },
-    { level: 'ERROR', msg: `Failed to attach volume vol-${Math.random().toString(36).substr(2, 8)}: timeout`, time: new Date(Date.now() - 120000).toISOString().replace('T', ' ').substr(0, 19) },
-    { level: 'INFO', msg: `User 'admin' initiated 'Reboot' on db-cluster-prod`, time: new Date(Date.now() - 180000).toISOString().replace('T', ' ').substr(0, 19) },
-    { level: 'INFO', msg: `Security policy 'Strict-v4' updated on firewall`, time: new Date(Date.now() - 300000).toISOString().replace('T', ' ').substr(0, 19) },
-  ];
-
-  const healthPercent = 98;
+  const healthPercent = health.healthPercent;
 
   // ── Main render ──────────────────────────────────
   return (
@@ -284,12 +317,50 @@ function ComputeManager() {
             )}
           </div>
 
-          {/* Launch New Instance CTA */}
+          {/* SSH Connection Info */}
+          {instances.some((i) => getState(i) === 'running' && getPublicIp(i) !== '—') && (
+            <div className="ssh-info-card">
+              <div className="ssh-info-header">
+                <h2><FiTerminal size={18} /> SSH Connection</h2>
+                <button className="btn btn-secondary btn-sm" onClick={handleDownloadKey}>
+                  <FiKey /> Download PEM Key
+                </button>
+              </div>
+              <div className="ssh-instances-list">
+                {instances
+                  .filter((i) => getState(i) === 'running' && getPublicIp(i) !== '—')
+                  .map((inst) => {
+                    const ip = getPublicIp(inst);
+                    const sshCmd = `ssh -i vaultify-ssh-key.pem ec2-user@${ip}`;
+                    return (
+                      <div key={getInstanceId(inst)} className="ssh-instance-row">
+                        <span className="ssh-name">{getInstanceName(inst)}</span>
+                        <code className="ssh-command">{sshCmd}</code>
+                        <button
+                          className="btn btn-ghost btn-sm"
+                          title="Copy SSH command"
+                          onClick={() => copyToClipboard(sshCmd)}
+                        >
+                          <FiCopy />
+                        </button>
+                      </div>
+                    );
+                  })}
+              </div>
+              <p className="ssh-note">
+                First time? Run <code>chmod 400 vaultify-ssh-key.pem</code> before connecting.
+              </p>
+            </div>
+          )}
+
+          {/* Download Key CTA (always visible) */}
           <div className="launch-cta-card">
-            <div className="launch-cta-icon">🚀</div>
-            <h3>Launch New Instance</h3>
-            <p>Spin up highly optimized compute resources in seconds</p>
-            <div className="launch-cta-bar"><div className="launch-cta-progress" /></div>
+            <div className="launch-cta-icon">🔑</div>
+            <h3>SSH Access</h3>
+            <p>Download your private key to connect to instances via SSH</p>
+            <button className="btn btn-secondary btn-sm" onClick={handleDownloadKey} style={{marginTop: '12px'}}>
+              <FiKey /> Download PEM Key
+            </button>
           </div>
         </div>
 
@@ -320,17 +391,17 @@ function ComputeManager() {
               </svg>
               <div className="gauge-center">
                 <span className="gauge-value">{healthPercent}%</span>
-                <span className="gauge-label">STATUS: OPTIMAL</span>
+                <span className="gauge-label">STATUS: {health.statusLabel}</span>
               </div>
             </div>
             <div className="health-metrics">
               <div className="health-metric">
                 <span>CPU LOAD</span>
-                <div className="metric-bar"><div className="metric-fill" style={{ width: '12%', background: '#2DD4BF' }} /><span>12%</span></div>
+                <div className="metric-bar"><div className="metric-fill" style={{ width: `${health.cpuLoad}%`, background: '#2DD4BF' }} /><span>{health.cpuLoad}%</span></div>
               </div>
               <div className="health-metric">
                 <span>MEMORY USAGE</span>
-                <div className="metric-bar"><div className="metric-fill" style={{ width: '42%', background: '#3B82F6' }} /><span>4.2GB</span></div>
+                <div className="metric-bar"><div className="metric-fill" style={{ width: '42%', background: '#3B82F6' }} /><span>{health.memoryUsage}</span></div>
               </div>
             </div>
           </div>

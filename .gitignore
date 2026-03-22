@@ -20,7 +20,7 @@ aws-config.json
 
 # Data files (contain user data and uploaded files)
 server/data/
-storage/
+server/data/keys/
 
 # Logs
 logs

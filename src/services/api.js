@@ -316,6 +316,28 @@ export const computeAPI = {
   terminateInstance: async (instanceId) => {
     const response = await api.delete(`/compute/${instanceId}`);
     return response.data;
+  },
+
+  downloadKey: async () => {
+    const response = await api.get('/compute/key', { responseType: 'blob' });
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'vaultify-ssh-key.pem');
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.URL.revokeObjectURL(url);
+  },
+
+  fetchHealth: async () => {
+    const response = await api.get('/compute/health');
+    return response.data;
+  },
+
+  fetchLogs: async () => {
+    const response = await api.get('/compute/logs');
+    return response.data;
   }
 };
 

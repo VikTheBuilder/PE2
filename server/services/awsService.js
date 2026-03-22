@@ -31,7 +31,13 @@ const {
   StopInstancesCommand,
   TerminateInstancesCommand,
   RunInstancesCommand,
-  DescribeInstanceStatusCommand
+  DescribeInstanceStatusCommand,
+  CreateKeyPairCommand,
+  DescribeKeyPairsCommand,
+  CreateSecurityGroupCommand,
+  AuthorizeSecurityGroupIngressCommand,
+  DescribeSecurityGroupsCommand,
+  DescribeVpcsCommand
 } = require('@aws-sdk/client-ec2');
 
 const {
@@ -529,6 +535,12 @@ module.exports = {
   TerminateInstancesCommand,
   RunInstancesCommand,
   DescribeInstanceStatusCommand,
+  CreateKeyPairCommand,
+  DescribeKeyPairsCommand,
+  CreateSecurityGroupCommand,
+  AuthorizeSecurityGroupIngressCommand,
+  DescribeSecurityGroupsCommand,
+  DescribeVpcsCommand,
   // Rekognition
   rekognitionClient,
   DetectLabelsCommand,
