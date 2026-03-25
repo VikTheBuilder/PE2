@@ -20,7 +20,8 @@ const {
   DeleteBucketCommand,
   ListObjectVersionsCommand,
   AbortMultipartUploadCommand,
-  ListMultipartUploadsCommand
+  ListMultipartUploadsCommand,
+  PutBucketNotificationConfigurationCommand
 } = require('@aws-sdk/client-s3');
 const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
 
@@ -54,6 +55,11 @@ const {
   FilterLogEventsCommand
 } = require('@aws-sdk/client-cloudwatch-logs');
 
+const {
+  LambdaClient,
+  GetFunctionCommand
+} = require('@aws-sdk/client-lambda');
+
 const config = require('../config/environment');
 
 // Initialize S3 client
@@ -85,6 +91,15 @@ const rekognitionClient = config.DEV_MODE ? null : new RekognitionClient({
 
 // Initialize CloudWatch Logs client
 const cloudWatchLogsClient = config.DEV_MODE ? null : new CloudWatchLogsClient({
+  credentials: {
+    accessKeyId: config.AWS_ACCESS_KEY_ID,
+    secretAccessKey: config.AWS_SECRET_ACCESS_KEY,
+  },
+  region: config.AWS_REGION
+});
+
+// Initialize Lambda client (for looking up function ARNs)
+const lambdaClient = config.DEV_MODE ? null : new LambdaClient({
   credentials: {
     accessKeyId: config.AWS_ACCESS_KEY_ID,
     secretAccessKey: config.AWS_SECRET_ACCESS_KEY,
@@ -169,6 +184,40 @@ const createUserBucket = async (bucketName) => {
     });
     await s3Client.send(ownershipCommand);
     console.log('✅ Ownership controls set');
+
+    // Step 5: Attach Lambda trigger for AI tagging (if Lambda function exists)
+    if (config.AWS_LAMBDA_FUNCTION_NAME) {
+      try {
+        console.log('Step 5: Attaching Lambda AI tagger trigger...');
+        // Look up the Lambda function ARN
+        const lambdaInfo = await lambdaClient.send(new GetFunctionCommand({
+          FunctionName: config.AWS_LAMBDA_FUNCTION_NAME
+        }));
+        const lambdaArn = lambdaInfo.Configuration.FunctionArn;
+
+        // Set S3 event notification to trigger Lambda on uploads
+        await s3Client.send(new PutBucketNotificationConfigurationCommand({
+          Bucket: bucketName,
+          NotificationConfiguration: {
+            LambdaFunctionConfigurations: [{
+              Id: 'auto-ai-tagger',
+              LambdaFunctionArn: lambdaArn,
+              Events: ['s3:ObjectCreated:*'],
+              Filter: {
+                Key: {
+                  FilterRules: [{ Name: 'prefix', Value: 'uploads/' }]
+                }
+              }
+            }]
+          }
+        }));
+        console.log(`✅ Lambda trigger attached (${config.AWS_LAMBDA_FUNCTION_NAME})`);
+      } catch (lambdaErr) {
+        // Non-fatal: bucket still works, just no auto-tagging
+        console.warn(`⚠️ Could not attach Lambda trigger: ${lambdaErr.message}`);
+        console.warn('   AI auto-tagging will not work. You can add the trigger manually in the S3 console.');
+      }
+    }
 
     console.log(`🎉 S3 bucket fully configured: ${bucketName}`);
     return bucketName;
