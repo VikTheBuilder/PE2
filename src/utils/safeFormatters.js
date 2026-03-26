@@ -45,16 +45,16 @@ export const formatStorageSize = (sizeInGB) => {
 export const formatCurrency = (amount, currency = '$') => {
   // Handle null, undefined, or non-numeric values
   if (amount == null || typeof amount !== 'number' || isNaN(amount)) {
-    return `${currency}0.00`;
+    return `${currency}0.0000`;
   }
 
   // Handle negative values (show as $0.00 for billing context)
   if (amount < 0) {
-    return `${currency}0.00`;
+    return `${currency}0.0000`;
   }
 
   // Format with 2 decimal places
-  return `${currency}${amount.toFixed(2)}`;
+  return `${currency}${amount.toFixed(4)}`;
 };
 
 /**

@@ -199,12 +199,12 @@ router.post('/upload', authenticateToken, upload.single('file'), async (req, res
 
     // Determine storage class to use
     let selectedStorageClass;
-    if (storageClass && ['STANDARD', 'STANDARD_IA', 'ONEZONE_IA', 'GLACIER_IR', 'GLACIER', 'DEEP_ARCHIVE'].includes(storageClass)) {
+    if (storageClass && ['INTELLIGENT_TIERING', 'STANDARD', 'STANDARD_IA', 'ONEZONE_IA', 'GLACIER_IR', 'GLACIER', 'DEEP_ARCHIVE'].includes(storageClass)) {
       selectedStorageClass = storageClass;
       console.log(`  - Storage class: ${selectedStorageClass} (user selected)`);
     } else if (config.SHOW_STORAGE_CLASS_OPTIONS) {
       selectedStorageClass = config.DEFAULT_STORAGE_CLASS;
-      console.log(`  - Storage class: ${selectedStorageClass} (default)`);
+      console.log(`  - Storage class: ${selectedStorageClass} (default falls back to STANDARD)`);
     } else {
       selectedStorageClass = getOptimalStorageClass(mimetype, size, originalname);
       console.log(`  - Storage class: ${selectedStorageClass} (auto-optimized)`);
