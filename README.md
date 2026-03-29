@@ -398,7 +398,7 @@ Open **http://localhost:3000** → Register → Start using!
 
 ---
 
-## 💡 Usage
+##  Usage
 
 ### Storage Management
 ```
@@ -429,7 +429,7 @@ Dashboard → Billing → View real-time costs
 
 ---
 
-## 📡 API Reference
+##  API Reference
 
 ### Authentication
 
@@ -484,7 +484,7 @@ Dashboard → Billing → View real-time costs
 
 ---
 
-## 🔒 Security
+##  Security
 
 | Layer | Implementation |
 |-------|---------------|
@@ -498,7 +498,7 @@ Dashboard → Billing → View real-time costs
 
 ---
 
-## 🗺️ Future Roadmap
+## Future Roadmap
 
 - [ ] **Database Migration** — Replace JSON files with MongoDB or PostgreSQL for production scalability
 - [ ] **Real CloudWatch Metrics** — Integrate CloudWatch `GetMetricData` for actual CPU/memory monitoring
@@ -513,7 +513,7 @@ Dashboard → Billing → View real-time costs
 
 ---
 
-## 📝 License
+## License
 
 This project is licensed under the **group 89**.
 
@@ -521,7 +521,6 @@ This project is licensed under the **group 89**.
 
 <div align="center">
 
-**Built with Love by [VikTheBuilder](https://github.com/VikTheBuilder)**
 
 *Vaultify — Cloud infrastructure, simplified.*
 
