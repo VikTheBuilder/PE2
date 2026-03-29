@@ -1,6 +1,6 @@
 <div align="center">
 
-# ☁️ VAULTIFY
+# VAULTIFY
 
 ### **Cloud Infrastructure Platform — Storage · Compute · AI**
 
@@ -17,7 +17,7 @@
 
 ---
 
-## 📖 Project Overview
+## Project Overview
 
 **Vaultify** is a full-stack cloud infrastructure platform built as a comprehensive demonstration of modern cloud-native architecture. It integrates four core AWS services — **S3**, **EC2**, **Lambda**, and **Rekognition** — behind a React-based dashboard with JWT authentication, real-time billing analytics, and an Aurora-themed UI.
 
@@ -31,7 +31,7 @@ The platform abstracts away the complexity of raw AWS APIs and provides users wi
 
 ---
 
-## ✨ Key Features
+##  Key Features
 
 | Category | Feature | Description |
 |----------|---------|-------------|
@@ -57,7 +57,7 @@ The platform abstracts away the complexity of raw AWS APIs and provides users wi
 
 ---
 
-## 🏗️ Architecture
+##  Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
@@ -129,7 +129,7 @@ User uploads image → Express saves to S3 (uploads/ prefix)
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 ### Frontend
 
@@ -175,7 +175,7 @@ User uploads image → Express saves to S3 (uploads/ prefix)
 
 ---
 
-## 📂 Directory Structure
+##  Directory Structure
 
 ```
 vaultify/
@@ -268,7 +268,7 @@ vaultify/
 
 ---
 
-## 🔧 Component Breakdown
+##  Component Breakdown
 
 ### Frontend Components
 
@@ -296,7 +296,7 @@ vaultify/
 
 ---
 
-## 📋 Prerequisites
+##  Prerequisites
 
 | Software | Version | Required |
 |----------|---------|----------|
@@ -318,7 +318,7 @@ Attach these managed policies to your IAM user:
 
 ---
 
-## 🚀 Installation & Setup
+##  Installation & Setup
 
 ### 1. Clone the Repository
 
@@ -515,13 +515,13 @@ Dashboard → Billing → View real-time costs
 
 ## 📝 License
 
-This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+This project is licensed under the **group 89**.
 
 ---
 
 <div align="center">
 
-**Built with ☁️ by [VikTheBuilder](https://github.com/VikTheBuilder)**
+**Built with Love by [VikTheBuilder](https://github.com/VikTheBuilder)**
 
 *Vaultify — Cloud infrastructure, simplified.*
 
