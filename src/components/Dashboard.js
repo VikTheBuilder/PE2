@@ -14,7 +14,7 @@ import {
   FiHome,
   FiFolder,
   FiStar,
-  FiSettings,
+
   FiUser,
   FiSearch,
   FiGrid,
@@ -23,7 +23,7 @@ import {
   FiX,
   FiLogOut,
   FiFolderPlus,
-  FiClock,
+
   FiHardDrive,
   FiSun,
   FiMoon,
@@ -218,7 +218,15 @@ const Dashboard = () => {
         };
 
         const response = await fileAPI.uploadFile(file, onUploadProgress, currentFolderId, storageClass);
-        setFiles(prev => [response.file, ...prev]);
+        
+        setFiles(prev => {
+          if (response.isNewVersion) {
+            // Replace the existing file with the updated version details
+            return prev.map(f => f.id === response.file.id ? response.file : f);
+          }
+          // Add new file to top of list
+          return [response.file, ...prev];
+        });
       }
     } catch (error) {
       console.error('Upload error:', error);
@@ -686,10 +694,7 @@ const Dashboard = () => {
             <FiGrid />
             <span>File Types</span>
           </div>
-          <div className="nav-item">
-            <FiClock />
-            <span>Recent</span>
-          </div>
+
           <div
             className={`nav-item ${currentView === 'storage' ? 'active' : ''}`}
             onClick={() => setCurrentView('storage')}
@@ -718,10 +723,7 @@ const Dashboard = () => {
             <FiTag />
             <span>AI Tags</span>
           </div>
-          <div className="nav-item">
-            <FiSettings />
-            <span>Settings</span>
-          </div>
+
         </nav>
 
         <div className="sidebar-footer">

@@ -16,9 +16,11 @@ import { useNotifications } from '../contexts/NotificationContext';
 // import { fileAPI } from '../services/api'; // Removed unused import
 import './VersionHistory.css';
 
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+
 const VersionHistory = ({ fileId, fileName, onClose, onVersionRestore }) => {
   const { showSuccess, showError } = useNotifications();
-  const [versions, setVersions] = useState([]);
+  const [versions, setVersions] = useState({ versions: [], totalVersions: 0, totalSize: 0, totalMonthlyCost: 0 });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [editingComment, setEditingComment] = useState(null);
@@ -31,7 +33,7 @@ const VersionHistory = ({ fileId, fileName, onClose, onVersionRestore }) => {
       setError('');
       
       const token = localStorage.getItem('token');
-      const response = await fetch(`/api/files/${fileId}/versions`, {
+      const response = await fetch(`${API_BASE_URL}/versions/${fileId}/versions`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -42,7 +44,7 @@ const VersionHistory = ({ fileId, fileName, onClose, onVersionRestore }) => {
       }
       
       const data = await response.json();
-      setVersions(data.versions || []);
+      setVersions(data);
     } catch (error) {
       console.error('Error fetching version history:', error);
       setError('Failed to load version history');
@@ -65,7 +67,7 @@ const VersionHistory = ({ fileId, fileName, onClose, onVersionRestore }) => {
     }
 
     try {
-      const response = await fetch(`/api/versions/${fileId}/versions/${versionId}/restore`, {
+      const response = await fetch(`${API_BASE_URL}/versions/${fileId}/versions/${versionId}/restore`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -92,7 +94,7 @@ const VersionHistory = ({ fileId, fileName, onClose, onVersionRestore }) => {
     }
 
     try {
-      const response = await fetch(`/api/versions/${fileId}/versions/${versionId}`, {
+      const response = await fetch(`${API_BASE_URL}/versions/${fileId}/versions/${versionId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -113,7 +115,7 @@ const VersionHistory = ({ fileId, fileName, onClose, onVersionRestore }) => {
 
   const handleDownloadVersion = async (versionId, versionNumber) => {
     try {
-      const response = await fetch(`/api/versions/${fileId}/versions/${versionId}/download`, {
+      const response = await fetch(`${API_BASE_URL}/versions/${fileId}/versions/${versionId}/download`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
@@ -140,7 +142,7 @@ const VersionHistory = ({ fileId, fileName, onClose, onVersionRestore }) => {
 
   const handleUpdateComment = async (versionId) => {
     try {
-      const response = await fetch(`/api/versions/${fileId}/versions/${versionId}`, {
+      const response = await fetch(`${API_BASE_URL}/versions/${fileId}/versions/${versionId}`, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -169,7 +171,7 @@ const VersionHistory = ({ fileId, fileName, onClose, onVersionRestore }) => {
 
     try {
       setOptimizing(true);
-      const response = await fetch(`/api/versions/${fileId}/versions/optimize`, {
+      const response = await fetch(`${API_BASE_URL}/versions/${fileId}/versions/optimize`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,

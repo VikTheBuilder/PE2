@@ -60,10 +60,17 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/', setupRateLimit());
 
 // Request logging middleware
+const SENSITIVE_FIELDS = ['password', 'secret', 'token', 'apikey', 'authorization', 'newpassword', 'confirmpassword'];
 app.use('/api', (req, res, next) => {
   console.log(`🌐 ${req.method} ${req.originalUrl} - ${new Date().toISOString()}`);
   if (req.body && Object.keys(req.body).length > 0) {
-    console.log(`📝 Body:`, JSON.stringify(req.body, null, 2));
+    const sanitized = { ...req.body };
+    for (const key of Object.keys(sanitized)) {
+      if (SENSITIVE_FIELDS.includes(key.toLowerCase())) {
+        sanitized[key] = '********';
+      }
+    }
+    console.log(`📝 Body:`, JSON.stringify(sanitized, null, 2));
   }
   next();
 });
