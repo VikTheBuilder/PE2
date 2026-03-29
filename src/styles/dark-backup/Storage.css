@@ -1,6 +1,6 @@
 .storage-page {
   min-height: 100vh;
-  background: var(--bg-primary);
+  background: #0A0E0F;
   color: var(--text-primary);
   display: flex;
   width: 100%;
@@ -70,13 +70,8 @@
   background: var(--hover-color);
   color: var(--text-primary);
   transform: translateX(4px) scale(1.02);
-  border: 1px solid rgba(14, 165, 233, 0.2);
-  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.08);
-}
-
-[data-theme="dark"] .nav-item:hover {
-  border: 1px solid rgba(56, 189, 248, 0.3);
-  box-shadow: 0 4px 12px rgba(56, 189, 248, 0.2);
+  border: 1px solid rgba(45, 212, 191, 0.3);
+  box-shadow: 0 4px 12px rgba(45, 212, 191, 0.2);
 }
 
 .nav-item.active {
@@ -349,13 +344,8 @@
 
 .overview-card:hover {
   transform: translateY(-8px) scale(1.03);
-  box-shadow: 0 16px 48px rgba(14, 165, 233, 0.10), 0 8px 32px rgba(0, 0, 0, 0.06);
-  border: 1px solid rgba(14, 165, 233, 0.2);
-}
-
-[data-theme="dark"] .overview-card:hover {
-  box-shadow: 0 25px 80px rgba(56, 189, 248, 0.15), 0 8px 32px rgba(0, 0, 0, 0.12);
-  border: 1px solid rgba(56, 189, 248, 0.2);
+  box-shadow: 0 25px 80px rgba(45, 212, 191, 0.15), 0 8px 32px rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(45, 212, 191, 0.2);
 }
 
 .overview-card:hover::before {
@@ -546,13 +536,8 @@
 
 .breakdown-card:hover {
   transform: translateY(-6px) scale(1.02);
-  box-shadow: 0 16px 48px rgba(14, 165, 233, 0.10), 0 6px 24px rgba(0, 0, 0, 0.06);
-  border: 1px solid rgba(14, 165, 233, 0.2);
-}
-
-[data-theme="dark"] .breakdown-card:hover {
-  box-shadow: 0 16px 48px rgba(56, 189, 248, 0.15), 0 6px 24px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(56, 189, 248, 0.2);
+  box-shadow: 0 16px 48px rgba(45, 212, 191, 0.15), 0 6px 24px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(45, 212, 191, 0.2);
 }
 
 .breakdown-card:hover::before {

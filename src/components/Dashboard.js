@@ -30,7 +30,8 @@ import {
   FiDollarSign,
   FiFile,
   FiServer,
-  FiTag
+  FiTag,
+  FiClock
 } from 'react-icons/fi';
 import { useTheme } from '../contexts/ThemeContext';
 import { useSharedFiles } from '../contexts/SharedFilesContext';
@@ -218,7 +219,7 @@ const Dashboard = () => {
         };
 
         const response = await fileAPI.uploadFile(file, onUploadProgress, currentFolderId, storageClass);
-        
+
         setFiles(prev => {
           if (response.isNewVersion) {
             // Replace the existing file with the updated version details

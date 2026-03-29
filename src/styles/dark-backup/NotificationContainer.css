@@ -12,10 +12,11 @@
 }
 
 .notification {
-  background: #FFFFFF;
-  border: 1px solid #E2E8F0;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
   border-radius: 12px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
   padding: 16px;
   pointer-events: auto;
@@ -27,11 +28,7 @@
 
 .notification:hover {
   transform: translateY(-4px) scale(1.01);
-  box-shadow: 0 12px 40px rgba(14, 165, 233, 0.12);
-}
-
-[data-theme="dark"] .notification:hover {
-  box-shadow: 0 12px 40px rgba(56, 189, 248, 0.2);
+  box-shadow: 0 12px 40px rgba(45, 212, 191, 0.2);
 }
 
 .notification-success {

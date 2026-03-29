@@ -1,6 +1,5 @@
 /* ======================================================
-   App.css — Light Theme Design Tokens + Utilities
-   Plus Jakarta Sans / Sky Blue Accent
+   App.css — Obsidian / Neon Green Design Tokens + Utilities
    ====================================================== */
 
 * {
@@ -11,63 +10,63 @@
 
 :root {
   /* ── Primary Palette ──────────────────────────── */
-  --primary: #0EA5E9;
-  --primary-light: #F0F9FF;
-  --primary-dark: #0284C7;
-  --primary-hover: #38BDF8;
-  --secondary: #0EA5E9;
-  --accent: #0EA5E9;
-  --warning: #F59E0B;
-  --error: #EF4444;
-  --success: #10B981;
+  --primary: var(--neon-green, #2DD4BF);
+  --primary-light: var(--obsidian-3, #111718);
+  --primary-dark: #00CC6A;
+  --primary-hover: #33FFaa;
+  --secondary: var(--neon-green, #2DD4BF);
+  --accent: var(--neon-green, #2DD4BF);
+  --warning: #FFB347;
+  --error: #FF5555;
+  --success: #2DD4BF;
 
   /* Legacy (compatibility) */
-  --legacy-primary: #0EA5E9;
-  --legacy-secondary: #EF4444;
-  --legacy-accent: #0EA5E9;
+  --legacy-primary: #00CC6A;
+  --legacy-secondary: #FF5555;
+  --legacy-accent: #2DD4BF;
 
   /* ── Neutral Colors ───────────────────────────── */
   --white: #FFFFFF;
-  --gray-50: #F8FAFC;
-  --gray-100: #F1F5F9;
-  --gray-200: #E2E8F0;
-  --gray-300: #CBD5E1;
-  --gray-400: #94A3B8;
-  --gray-500: #64748B;
-  --gray-600: #475569;
-  --gray-700: #334155;
-  --gray-800: #1E293B;
-  --gray-900: #0F172A;
+  --gray-50: #F0FAF4;
+  --gray-100: #E0F5E8;
+  --gray-200: #C0E8D0;
+  --gray-300: #A0BFB0;
+  --gray-400: #5A8A6E;
+  --gray-500: #3D6B52;
+  --gray-600: #2A5040;
+  --gray-700: #1C3830;
+  --gray-800: #111718;
+  --gray-900: #0A0E0F;
 
   /* ── Background Colors ────────────────────────── */
-  --bg-primary: #F8FAFC;
-  --bg-secondary: #F1F5F9;
-  --bg-tertiary: #E2E8F0;
-  --bg-elevated: #FFFFFF;
-  --bg-color: #F8FAFC;
-  --card-bg: #FFFFFF;
-  --hover-color: rgba(14, 165, 233, 0.06);
+  --bg-primary: var(--obsidian-2, #0A0E0F);
+  --bg-secondary: var(--obsidian-3, #111718);
+  --bg-tertiary: var(--obsidian-4, #192225);
+  --bg-elevated: var(--obsidian-4, #192225);
+  --bg-color: var(--obsidian-2, #0A0E0F);
+  --card-bg: var(--obsidian-3, #111718);
+  --hover-color: rgba(45, 212, 191, 0.08);
 
   /* ── Text Colors ──────────────────────────────── */
-  --text-primary: #1E293B;
-  --text-secondary: #475569;
-  --text-tertiary: #64748B;
-  --text-inverse: #FFFFFF;
-  --text-color: #1E293B;
+  --text-primary: #E8F5EE;
+  --text-secondary: #A0BFB0;
+  --text-tertiary: #5A8A6E;
+  --text-inverse: #0A0E0F;
+  --text-color: #E8F5EE;
 
   /* ── Border Colors ────────────────────────────── */
-  --border-light: #E2E8F0;
-  --border-medium: #CBD5E1;
-  --border-focus: #0EA5E9;
-  --border-color: #E2E8F0;
+  --border-light: rgba(45, 212, 191, 0.12);
+  --border-medium: rgba(45, 212, 191, 0.20);
+  --border-focus: #2DD4BF;
+  --border-color: rgba(45, 212, 191, 0.12);
 
   /* ── Shadows ──────────────────────────────────── */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
-  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.08);
-  --shadow-xl: 0 8px 32px rgba(0, 0, 0, 0.10);
-  --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.06);
-  --shadow-neon: 0 0 20px rgba(14, 165, 233, 0.08);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 8px 32px rgba(0, 0, 0, 0.6);
+  --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --shadow-neon: 0 0 20px rgba(45, 212, 191, 0.1);
 
   /* ── Spacing ──────────────────────────────────── */
   --space-1: 0.25rem;
@@ -83,10 +82,10 @@
   --space-20: 5rem;
 
   /* ── Typography ───────────────────────────────── */
-  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-sans: 'Inter', 'Comfortaa', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', 'SF Mono', Monaco, Consolas, monospace;
-  --font-heading: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-heading: 'Inter', 'Comfortaa', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Inter', 'Comfortaa', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
   --text-xs: 0.75rem;
   --text-sm: clamp(0.75rem, 2vw, 0.875rem);
@@ -129,13 +128,13 @@
   --z-tooltip: 1060;
 }
 
-/* ─── Dark Theme ─────────────────────────────────────── */
+/* ─── Dark Theme (mirrors the design screenshots) ─── */
 [data-theme="dark"] {
-  --primary: #38BDF8;
+  --primary: #2DD4BF;
   --primary-light: #111718;
   --primary-dark: #0A0E0F;
-  --accent: #38BDF8;
-  --primary-hover: #7DD3FC;
+  --accent: #2DD4BF;
+  --primary-hover: #33FFaa;
 
   --bg-primary: #0A0E0F;
   --bg-secondary: #111718;
@@ -143,17 +142,17 @@
   --bg-elevated: #192225;
   --bg-color: #0A0E0F;
   --card-bg: #111718;
-  --hover-color: rgba(56, 189, 248, 0.08);
+  --hover-color: rgba(45, 212, 191, 0.08);
 
   --text-primary: #E8F5EE;
-  --text-secondary: #94A3B8;
-  --text-tertiary: #64748B;
+  --text-secondary: #A0BFB0;
+  --text-tertiary: #5A8A6E;
   --text-color: #E8F5EE;
 
-  --border-light: rgba(56, 189, 248, 0.12);
-  --border-medium: rgba(56, 189, 248, 0.20);
-  --border-color: rgba(56, 189, 248, 0.12);
-  --border-focus: #38BDF8;
+  --border-light: rgba(45, 212, 191, 0.12);
+  --border-medium: rgba(45, 212, 191, 0.20);
+  --border-color: rgba(45, 212, 191, 0.12);
+  --border-focus: #2DD4BF;
 
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
   --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.5);
@@ -178,9 +177,9 @@ body {
 [data-theme="dark"] body {
   background: linear-gradient(160deg,
       #060B0C 0%,
-      rgba(56, 189, 248, 0.03) 40%,
+      rgba(45, 212, 191, 0.03) 40%,
       #0A0E0F 70%,
-      rgba(56, 189, 248, 0.02) 100%);
+      rgba(45, 212, 191, 0.02) 100%);
 }
 
 /* ─── Responsive Overrides ────────────────────────── */
@@ -197,8 +196,8 @@ body {
     --container-padding: 1rem;
     --section-spacing: 2rem;
     --grid-gap: 1rem;
-    --shadow-md: 0 1px 4px rgba(0, 0, 0, 0.06);
-    --shadow-lg: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 1px 4px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 2px 8px rgba(0, 0, 0, 0.4);
   }
 
   [data-theme="dark"] {
@@ -221,8 +220,8 @@ body {
 @media (-webkit-min-device-pixel-ratio: 2),
 (min-resolution: 192dpi) {
   :root {
-    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
-    --shadow-md: 0 1px 4px rgba(0, 0, 0, 0.06);
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
+    --shadow-md: 0 1px 4px rgba(0, 0, 0, 0.15);
   }
 }
 
@@ -253,57 +252,53 @@ body {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #0EA5E9, #0284C7);
-  color: #FFFFFF;
-  border-color: #0EA5E9;
+  background: linear-gradient(135deg, #2DD4BF, #00CC6A);
+  color: #0A0E0F;
+  border-color: #2DD4BF;
   font-weight: 700;
 }
 
-[data-theme="dark"] .btn-primary {
-  background: linear-gradient(135deg, #38BDF8, #0EA5E9);
-  color: #0A0E0F;
-  border-color: #38BDF8;
-}
-
 .btn-primary:hover:not(:disabled) {
-  background: linear-gradient(135deg, #38BDF8, #0EA5E9);
+  background: linear-gradient(135deg, #33FFaa, #2DD4BF);
   transform: translateY(-1px);
-  box-shadow: 0 4px 20px rgba(14, 165, 233, 0.25);
+  box-shadow: 0 4px 20px rgba(45, 212, 191, 0.3);
 }
 
 .btn-secondary {
-  background: var(--bg-elevated);
+  background: var(--glass-bg, rgba(17, 23, 24, 0.65));
   color: var(--text-primary);
   border-color: var(--border-medium);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .btn-secondary:hover:not(:disabled) {
   background: var(--hover-color);
-  border-color: #0EA5E9;
+  border-color: #2DD4BF;
 }
 
 .btn-outline {
   background: transparent;
-  color: #0EA5E9;
-  border-color: rgba(14, 165, 233, 0.3);
+  color: #2DD4BF;
+  border-color: rgba(45, 212, 191, 0.3);
 }
 
 .btn-outline:hover:not(:disabled) {
-  background: rgba(14, 165, 233, 0.06);
-  border-color: #0EA5E9;
+  background: rgba(45, 212, 191, 0.08);
+  border-color: #2DD4BF;
 }
 
 .btn-danger {
-  background: #EF4444;
+  background: #FF5555;
   color: var(--white);
-  border-color: #EF4444;
+  border-color: #FF5555;
 }
 
 .btn-danger:hover:not(:disabled) {
-  background: #DC2626;
-  border-color: #DC2626;
+  background: #FF3333;
+  border-color: #FF3333;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);
+  box-shadow: 0 4px 12px rgba(255, 85, 85, 0.3);
 }
 
 .btn-ghost {
@@ -314,7 +309,7 @@ body {
 
 .btn-ghost:hover:not(:disabled) {
   background: var(--hover-color);
-  color: #0EA5E9;
+  color: #2DD4BF;
 }
 
 .btn-sm {
@@ -348,7 +343,7 @@ body {
   height: 16px;
   margin: -8px 0 0 -8px;
   border: 2px solid transparent;
-  border-top-color: #0EA5E9;
+  border-top-color: #2DD4BF;
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }

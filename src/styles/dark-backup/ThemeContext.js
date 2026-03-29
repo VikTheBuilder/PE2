@@ -11,23 +11,21 @@ export const useTheme = () => {
 };
 
 export const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState(() => {
-    return localStorage.getItem('vaultify-theme') || 'light';
-  });
+  const [theme] = useState('dark');
 
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('vaultify-theme', theme);
-  }, [theme]);
+    // Always set to dark theme
+    document.documentElement.setAttribute('data-theme', 'dark');
+  }, []);
 
   const toggleTheme = () => {
-    setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+    // Do nothing - theme is always dark
   };
 
   const value = {
     theme,
     toggleTheme,
-    isDark: theme === 'dark'
+    isDark: true
   };
 
   return (
@@ -35,4 +33,4 @@ export const ThemeProvider = ({ children }) => {
       {children}
     </ThemeContext.Provider>
   );
-};
+}; 
