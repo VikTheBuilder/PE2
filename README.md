@@ -523,6 +523,6 @@ This project is licensed under the **group 89**.
 
 
 *Vaultify — Cloud infrastructure, simplified.*
-Date : 30/03/26
+
 
 </div>
